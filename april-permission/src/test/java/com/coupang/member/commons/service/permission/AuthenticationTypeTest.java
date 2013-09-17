@@ -10,7 +10,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import com.coupang.member.commons.service.permission.AuthenticationType;
+import com.diaimm.april.permission.permission.AuthenticationType;
 
 /**
  * @author diaimm

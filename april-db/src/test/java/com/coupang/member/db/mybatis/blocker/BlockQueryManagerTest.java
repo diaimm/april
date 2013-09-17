@@ -13,9 +13,9 @@ import junit.framework.Assert;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.junit.Test;
 
-import com.coupang.member.db.mybatis.blocker.BlockQueryManager;
-import com.coupang.member.db.mybatis.blocker.QueryParserUtil;
-import com.coupang.member.db.mybatis.blocker.BlockQueryManager.BlockQueryManagerRequestCommand;
+import com.diaimm.april.db.mybatis.blocker.BlockQueryManager;
+import com.diaimm.april.db.mybatis.blocker.QueryParserUtil;
+import com.diaimm.april.db.mybatis.blocker.BlockQueryManager.BlockQueryManagerRequestCommand;
 
 /**
  * @author diaimm

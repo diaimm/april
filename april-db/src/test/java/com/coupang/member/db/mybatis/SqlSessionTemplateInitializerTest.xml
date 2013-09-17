@@ -17,9 +17,9 @@
 		http://www.springframework.org/schema/cache/spring-cache.xsd">
 	
 	<!-- query listener -->
-	<bean class="com.coupang.member.db.mybatis.framework.listener.ExecutionQueryPrintListener"/>
+	<bean class="com.diaimm.april.db.mybatis.framework.listener.ExecutionQueryPrintListener"/>
 	
-	<bean class="com.coupang.member.db.mybatis.MapperScannerInitializer">
+	<bean class="com.diaimm.april.db.mybatis.MapperScannerInitializer">
 		<property name="properties">
 			<list>
 				<value>classpath:com/coupang/member/db/mybatis/dbs</value>

@@ -16,7 +16,7 @@
 			paging 처리.
 		</description>
 		<name>paging</name>
-		<tag-class>com.coupang.member.component.web.taglib.paging.PagingTag</tag-class>
+		<tag-class>com.diaimm.april.web.taglib.paging.PagingTag</tag-class>
 		<body-content>scriptless</body-content>
 		<!-- 필수값 -->
 		<attribute>
@@ -139,7 +139,7 @@
 			javascript 코드를 buffer로 담아 다시 모을 수 있습니다.
 		</description>
 		<name>jsCodeCollect</name>
-		<tag-class>com.coupang.member.component.web.taglib.bufferedresponse.JavascriptCodeCollectorTag</tag-class>
+		<tag-class>com.diaimm.april.web.taglib.bufferedresponse.JavascriptCodeCollectorTag</tag-class>
 		<body-content>scriptless</body-content>
 		<attribute>
 			<description>
@@ -165,7 +165,7 @@
 			화면에서 사용하는 공통 변수를 제공하는 Tag Lib
 		</description>
 		<name>urlInfo</name>
-		<tag-class>com.coupang.member.component.web.taglib.UrlInfoTag</tag-class>
+		<tag-class>com.diaimm.april.web.taglib.UrlInfoTag</tag-class>
 		<body-content>scriptless</body-content>
 		<attribute>
 			<description>
@@ -186,7 +186,7 @@
 	<tag>
 		<description>if</description>
 		<name>if</name>
-		<tag-class>com.coupang.member.component.web.taglib.ifs.IfTag</tag-class>
+		<tag-class>com.diaimm.april.web.taglib.ifs.IfTag</tag-class>
 		<body-content>scriptless</body-content>
 		<attribute>
 			<description>Boolean.valueOf()의 파라미터로 사용될 수 있는 적절한 값</description>
@@ -198,7 +198,7 @@
 	<tag>
 		<description>elseif</description>
 		<name>elseif</name>
-		<tag-class>com.coupang.member.component.web.taglib.ifs.ElseIfTag</tag-class>
+		<tag-class>com.diaimm.april.web.taglib.ifs.ElseIfTag</tag-class>
 		<body-content>scriptless</body-content>
 		<attribute>
 			<description>Boolean.valueOf()의 파라미터로 사용될 수 있는 적절한 값</description>
@@ -210,7 +210,7 @@
 	<tag>
 		<description>else</description>
 		<name>else</name>
-		<tag-class>com.coupang.member.component.web.taglib.ifs.ElseTag</tag-class>
+		<tag-class>com.diaimm.april.web.taglib.ifs.ElseTag</tag-class>
 		<body-content>scriptless</body-content>
 	</tag>
 	
@@ -218,7 +218,7 @@
 	<tag>
 		<description>js link를 생성한다</description>
 		<name>js</name>
-		<tag-class>com.coupang.member.component.web.compress.taglibs.JsTag</tag-class>
+		<tag-class>com.diaimm.april.web.compress.taglibs.JsTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<name>prefix</name>
@@ -230,7 +230,7 @@
 	<tag>
 		<description>css link를 생성한다</description>
 		<name>css</name>
-		<tag-class>com.coupang.member.component.web.compress.taglibs.CssTag</tag-class>
+		<tag-class>com.diaimm.april.web.compress.taglibs.CssTag</tag-class>
 		<body-content>empty</body-content>
 		<attribute>
 			<name>prefix</name>

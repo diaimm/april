@@ -16,7 +16,7 @@
 		http://www.springframework.org/schema/cache
 		http://www.springframework.org/schema/cache/spring-cache.xsd">
 	
-	<bean class="com.coupang.member.db.jpa.hibernate.JPAHibernateEntityManagerInitializer">
+	<bean class="com.diaimm.april.db.jpa.hibernate.JPAHibernateEntityManagerInitializer">
 		<property name="properties">
 			<list>
 				<value>classpath:com/coupang/member/db/jpa/hibernate/dbs</value>

@@ -15,7 +15,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.coupang.member.db.util.DataSourceIntializePropertiesUtils;
+import com.diaimm.april.db.util.DataSourceIntializePropertiesUtils;
 
 import java.io.IOException;
 import java.util.List;

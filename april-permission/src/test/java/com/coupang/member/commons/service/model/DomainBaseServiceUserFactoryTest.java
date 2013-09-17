@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.coupang.member.commons.service.model.DomainBaseServiceUserFactory;
+import com.diaimm.april.permission.model.DomainBaseServiceUserFactory;
 
 /**
  * @author 산토리니 윤영욱 (readytogo@coupang.com)

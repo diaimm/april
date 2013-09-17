@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.diaimm.april.notification.model.SMSRepository">
+	<!-- LG - SMS 발송 -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="trNum" parameterType="com.diaimm.april.notification.model.SMSMessage">
+		INSERT INTO bpang.SC_TRAN ( 
+			 TR_SENDDATE
+			,TR_SENDSTAT
+			,TR_MSGTYPE
+			,TR_PHONE
+			,TR_CALLBACK
+			,TR_MSG
+			,TR_ETC4
+		)	VALUES	(
+			 STR_TO_DATE(#{sendDate}, '%Y%m%d%H%i%s')
+			,'0'
+			,#{messageType}
+			,#{toNumber}
+			,#{fromNumber}
+			,#{message}
+			,#{notificationPurpose}
+		)
+	</insert>
+</mapper>

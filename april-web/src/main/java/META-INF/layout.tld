@@ -17,7 +17,7 @@
 			지정된 type의 element는 해당 태그 내부에서 사용할 수 있는 attribute로 세팅된다.
 		</description>
 		<name>consist</name>
-		<tag-class>com.coupang.member.component.web.view.layout.taglib.LayoutConsistTag</tag-class>
+		<tag-class>com.diaimm.april.web.view.layout.taglib.LayoutConsistTag</tag-class>
 		<body-content>scriptless</body-content>
 		<attribute>
 			<description>

@@ -1,10 +1,10 @@
 package com.coupang.member.db.jpa.hibernate;
 
-import com.coupang.member.commons.util.JaxbObjectMapper;
+import com.diaimm.april.commons.util.JaxbObjectMapper;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
-import com.coupang.member.db.jpa.hibernate.JPAHibernateEntityManagerInitializer.Persistence;
+import com.diaimm.april.db.jpa.hibernate.JPAHibernateEntityManagerInitializer.Persistence;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;

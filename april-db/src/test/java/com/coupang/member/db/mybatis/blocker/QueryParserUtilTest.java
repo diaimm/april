@@ -6,8 +6,8 @@
  */
 package com.coupang.member.db.mybatis.blocker;
 
-import com.coupang.member.db.mybatis.blocker.QueryParserUtil;
-import com.coupang.member.db.mybatis.blocker.QueryParserUtil.TableNamePatterns;
+import com.diaimm.april.db.mybatis.blocker.QueryParserUtil;
+import com.diaimm.april.db.mybatis.blocker.QueryParserUtil.TableNamePatterns;
 
 import junit.framework.Assert;
 import org.apache.commons.io.IOUtils;

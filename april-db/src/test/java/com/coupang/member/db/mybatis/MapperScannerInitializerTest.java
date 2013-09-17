@@ -6,9 +6,10 @@
  */
 package com.coupang.member.db.mybatis;
 
-import com.coupang.member.commons.util.EnumUtils;
-import com.coupang.member.db.mybatis.MapperScannerInitializer.BeanNamePostfixes;
-import com.coupang.member.db.util.DataSourceIntializePropertiesUtils;
+import com.diaimm.april.commons.util.EnumUtils;
+import com.diaimm.april.db.mybatis.MapperScannerInitializer;
+import com.diaimm.april.db.mybatis.MapperScannerInitializer.BeanNamePostfixes;
+import com.diaimm.april.db.util.DataSourceIntializePropertiesUtils;
 import freemarker.core.InvalidReferenceException;
 import freemarker.template.TemplateException;
 import org.apache.commons.lang.StringUtils;
@@ -163,7 +164,7 @@ public class MapperScannerInitializerTest {
 	@Test
 	public void PropertyKeysTest() {
 		Properties properties = new Properties();
-		Assert.assertEquals("com/coupang/member/db/mybatis/default-mybatis-config.xml", MapperScannerInitializer.MapperScannerPropertyKeys.MYBATIS_CONFIG_LOCATION.getValue(properties));
+		Assert.assertEquals("com/diaimm/april/db/mybatis/default-mybatis-config.xml", MapperScannerInitializer.MapperScannerPropertyKeys.MYBATIS_CONFIG_LOCATION.getValue(properties));
 
 		Object mappingLocations = MapperScannerInitializer.MapperScannerPropertyKeys.MYBATIS_MAPPING_LOCATION.getValue(properties);
 		Assert.assertTrue(List.class.isAssignableFrom(mappingLocations.getClass()));

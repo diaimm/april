@@ -12,7 +12,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.coupang.commons.util.DateUtil;
-import com.coupang.member.commons.service.util.ServiceUserUtils;
+import com.diaimm.april.permission.util.ServiceUserUtils;
 
 /**
  * @author diaimm
