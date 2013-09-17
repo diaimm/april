@@ -1,0 +1,234 @@
+
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<title>
+GitLab
+ - common-web
+</title>
+<link href="/assets/favicon-b9d89a160f47bda48bf0135cdcfa856c.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+<link href="/assets/application-bb856479ef6e4c912aca7192e47bf86a.css" media="screen" rel="stylesheet" type="text/css" />
+<script src="/assets/application-658126a06b98c3b1c0ea3d5cfbabfae0.js" type="text/javascript"></script>
+<link href="http://git.coupang.net/common-web/commits.atom?private_token=Dpbyk9xJWVpcXVxXqcB3&amp;ref=master" rel="alternate" title="Recent commits to common-web:master" type="application/atom+xml" />
+<meta content="authenticity_token" name="csrf-param" />
+<meta content="/aZTgQ5XbauDE/ymwh/NJS15o7SdqLfQkJw7RScxSfk=" name="csrf-token" />
+</head>
+
+<body class='ui_basic project'>
+
+<!-- Page Header -->
+<header class='top_panel_holder'>
+<div class='wrapper'>
+<div class='top_panel_content'>
+<div class='app_logo'>
+<a href="/" class="home" title="Home"><img alt="Logo_tr" src="/assets/logo_tr-54853f6513c9fef68a92660c1c487b7a.png" width="50" />
+<h1>
+GITLAB
+</h1>
+</a><a href="/admin/projects" class="admin_link" title="Admin area"><img alt="Admin" src="/assets/admin-1f671df8aeda9f9dfd46583edd574228.PNG" width="16" />
+</a></div>
+<h1 class='project_name'>common-web</h1>
+<div class='search'><input class="search-input" id="search" name="search" placeholder="Search" type="text" /></div>
+<div class='account-box'>
+<a href="/profile" class="pic"><img alt="843403ca60cc5db7de167f2a431e5c37?s=40&amp;d=identicon" src="http://www.gravatar.com/avatar/843403ca60cc5db7de167f2a431e5c37?s=40&amp;d=identicon" />
+</a><div class='account-links'>
+<a href="/profile" class="username">My profile
+</a><a href="/users/sign_out" class="logout" data-method="delete" rel="nofollow">Logout</a>
+</div>
+</div>
+</div>
+</div>
+</header>
+<script>
+  //<![CDATA[
+    $(function(){
+      $("#search").autocomplete({
+        source: [{"label":"wakeup","url":"/wakeup"},{"label":"common-web","url":"/common-web"},{"label":"Keys","url":"/keys"},{"label":"Projects","url":"/projects"},{"label":"Admin","url":"/admin"},{"label":"common-web / Issues","url":"/common-web/issues"},{"label":"common-web / Wall","url":"/common-web/wall"},{"label":"common-web / Tree","url":"/common-web/master/tree"},{"label":"common-web / Commits","url":"/common-web/commits"},{"label":"common-web / Team","url":"/common-web/team"}],
+        select: function(event, ui) { location.href = ui.item.url }
+      });
+    
+      $(document).keypress(function(e) {
+        if( $(e.target).is(":input") ) return;
+          switch(e.which)  {
+          case 115:  focusSearch();
+          e.preventDefault();
+        }
+      });
+    });
+  //]]>
+</script>
+
+
+<div class='container'>
+<nav class='main_menu'>
+<a href="/" class="home " title="Home">Home</a>
+
+<a href="/common-web" class="" title="Project">Project
+</a><a href="/common-web/master/tree" class="current">Files</a>
+<a href="/common-web/commits">Commits</a>
+<a href="/common-web/graph">Network</a>
+<a href="/common-web/issues">Issues
+<span class='count'>0</span>
+</a><a href="/common-web/merge_requests">Merge Requests
+<span class='count'>0</span>
+</a><a href="/common-web/wall">Wall
+</a><a href="/common-web/wikis/index">Wiki
+</a></nav>
+
+<div class='content'>
+<ul class='tabs'>
+<li>
+<form accept-charset="UTF-8" action="/common-web/switch" class="project-refs-form" data-remote="true" method="get"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+<select class="project-refs-select" id="ref" name="ref" onchange="$(this.form).trigger('submit');"><optgroup label="Branch"><option value="master" selected="selected">master</option></optgroup><optgroup label="Tag"></optgroup></select>
+<input id="destination" name="destination" type="hidden" value="tree" />
+<input id="path" name="path" type="hidden" />
+</form>
+
+</li>
+<li class='active'>
+<a href="/common-web/master/tree">Code
+</a></li>
+</ul>
+<div id='tree-holder'><ul class='breadcrumb'>
+<li>
+<span class='arrow'></span>
+<a href="/common-web/master/tree" data-remote="true">common-web
+</a></li>
+</ul>
+<div class='clear'></div>
+<div class='tree_progress'></div>
+<div id='tree-content-holder'>
+<table class='bordered-table' id='tree-slider'>
+<thead>
+<th>Name</th>
+<th>Last Update</th>
+<th>
+Last commit
+<a href="/common-web/commits?ref=master" class="right">History</a>
+</th>
+</thead>
+<tr class='tree-item' url='/common-web/master/tree/src'>
+<td class='tree-item-file-name'>
+<img alt="Dir" src="/assets/dir-b74758ac28620011db98ce119f3441dd.png" />
+<a href="/common-web/master/tree/src" data-remote="true">src</a>
+</td>
+<td class='cgray'>
+3 minutes
+ago
+</td>
+<td class='commit'>
+<strong><a href="/common-web/team_members/84">[diaimm]</a></strong>
+<a href="/common-web/commits/74d5ec8dd9f93e40cd2319c6284a1b9023095e74" class="tree-commit-link">META-INF 추가</a>
+</td>
+</tr>
+
+<tr class='tree-item' url='/common-web/master/tree/.gitignore'>
+<td class='tree-item-file-name'>
+<img alt="Txt" src="/assets/txt-5a8123a0d8a0cf8ce0f2f1ecda844ae1.png" />
+<a href="/common-web/master/tree/.gitignore" data-remote="true">.gitignore</a>
+</td>
+<td class='cgray'>
+3 minutes
+ago
+</td>
+<td class='commit'>
+<strong><a href="/common-web/team_members/84">[diaimm]</a></strong>
+<a href="/common-web/commits/74d5ec8dd9f93e40cd2319c6284a1b9023095e74" class="tree-commit-link">META-INF 추가</a>
+</td>
+</tr>
+
+<tr class='tree-item' url='/common-web/master/tree/README.md'>
+<td class='tree-item-file-name'>
+<img alt="Txt" src="/assets/txt-5a8123a0d8a0cf8ce0f2f1ecda844ae1.png" />
+<a href="/common-web/master/tree/README.md" data-remote="true">README.md</a>
+</td>
+<td class='cgray'>
+9 minutes
+ago
+</td>
+<td class='commit'>
+<strong><a href="/common-web/team_members/84">[diaimm]</a></strong>
+<a href="/common-web/commits/8fac89c2cfd743acf0ee2ba415f18bcf39925d6e" class="tree-commit-link">md 수정</a>
+</td>
+</tr>
+
+<tr class='tree-item' url='/common-web/master/tree/pom.xml'>
+<td class='tree-item-file-name'>
+<img alt="Txt" src="/assets/txt-5a8123a0d8a0cf8ce0f2f1ecda844ae1.png" />
+<a href="/common-web/master/tree/pom.xml" data-remote="true">pom.xml</a>
+</td>
+<td class='cgray'>
+less than a minute
+ago
+</td>
+<td class='commit'>
+<strong><a href="/common-web/team_members/84">[diaimm]</a></strong>
+<a href="/common-web/commits/5d1392b68198be3be58b46154ce15f34d84e08ec" class="tree-commit-link">init commit</a>
+</td>
+</tr>
+
+</table>
+<div id='tree-readme-holder'>
+<h3>README.md</h3>
+<div class='readme'>
+<h1>common-web</h1>
+
+<p>SANTORINI &ndash; common-web</p>
+
+<h2>주요 기능</h2>
+
+<p>&mdash; jsp(taglib) &ndash; js bubbling support
+&mdash; layout : tiles support, sitemesh support</p>
+
+<h3>사람들</h3>
+
+<h3>Tech Stack</h3>
+
+<p>&mdash; Spring 3.2.x
+&mdash; maven
+&mdash; logback</p>
+
+<h3>Convention</h3>
+
+<h3>DDD(Domain Driven Design)</h3>
+
+<h2>Profile</h2>
+
+<ul>
+<li>Useage : Spring Profile [<a href="http://blog.springsource.org/2011/02/11/spring-framework-3-1-m1-released/">http://blog.springsource.org/2011/02/11/spring-framework-3-1-m1-released/</a>]</li>
+<li>Profiles
+<strong> dev : 개발용
+</strong> test : 테스트용
+** service : 실서비스용</li>
+</ul>
+
+
+</div>
+</div>
+</div>
+<script>
+  //<![CDATA[
+    $(function(){
+      $('select#branch').selectmenu({style:'popup', width:200});
+      $('select#tag').selectmenu({style:'popup', width:200});
+      $('.project-refs-select').chosen();
+    
+      history.pushState({ path: this.path }, '', "/common-web/master/tree")
+    });
+  //]]>
+</script>
+
+</div>
+<script>
+  //<![CDATA[
+    $(function() { 
+      Tree.init();
+    });
+  //]]>
+</script>
+
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coupang.member.db.mybatis.sample.SampleRepository">
+	<select id="getTest" resultType="long">
+		select 1 
+		from 
+			dual
+		where
+			#{memberSrl} = #{memberSrl}
+	</select>
+	
+	<select id="countById" resultType="long" parameterType="long">
+		SELECT count(1)
+		FROM member
+		WHERE
+			memberSrl = #{memberSrl}
+	</select>
+	
+	<select id="findById" resultMap="memberDomain" parameterType="long">
+		SELECT *
+		FROM member
+		WHERE
+			memberSrl = #{memberSrl}
+	</select>
+	
+	<insert id="insertOneMember" parameterType="com.coupang.member.db.mybatis.sample.Member">
+		INSERT INTO member
+		(
+			subscribedDate
+		)
+		VALUES
+		(
+			sysdate()
+		)
+	</insert>
+</mapper>

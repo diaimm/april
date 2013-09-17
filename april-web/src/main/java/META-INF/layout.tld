@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+    version="2.1">
+    
+  <description>coupang layout</description>
+  <display-name>layout</display-name>
+  <tlib-version>1.0</tlib-version>
+  <short-name>layout</short-name>
+  <uri>http://www.coupang.com/taglib/layout</uri>
+
+	<tag>
+		<description>
+			현재의 layout config를 기준으로 지정된 type에 따라 출력 여부를 결정한다.
+			지정된 type의 element는 해당 태그 내부에서 사용할 수 있는 attribute로 세팅된다.
+		</description>
+		<name>consist</name>
+		<tag-class>com.coupang.member.component.web.view.layout.taglib.LayoutConsistTag</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<description>
+				사용할 layoutType
+			</description>
+			<name>type</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+				body 내에서 세팅되어야 하는 attribute name
+			</description>
+			<name>var</name>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+</taglib>

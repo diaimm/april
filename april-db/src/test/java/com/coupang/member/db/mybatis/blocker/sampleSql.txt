@@ -1,0 +1,60 @@
+// select query 들
+select * from select_test1;
+
+/** 쿼리 주석*/
+select *
+from
+-- from
+// 주석
+	select_test2/** 주석 문*/
+where
+	1= 1
+// 막판주석
+;
+	
+select 3,4, 5 from
+	select_test3, select_test4 as    t4,
+	select_test5 where 1=2;
+	
+select aa, * from
+(
+	select ddd from select_test6 where 1=2
+) as t1 where t=3;
+
+// insert query들
+insert into insert_table1
+(1,2,3,4,5)
+values
+(faf ,2,1,2,5);
+
+INSERT INTO insert_table2
+( 1, 2, 3, 4, 6) 
+SELECT 123
+	FROM 
+		select_insert_test;
+		
+insert into insert_table3, insert_table4 as t4;
+	
+	
+update update_Table set 1 = 1 where a = 2;
+update update_Table1 as tb1;
+update update_Table2 as tb2, update_table3 set 1 = 1;
+
+
+delete from delete_table1 where ttt = 1;
+delete from delete_table2 where ttt = (select ttt from delete_select_table1 where);
+
+delete from 
+	delete_table3
+where aaa;
+
+delete 
+from 
+	delete_table4
+where 
+	aaa = bbb;
+
+
+	
+	
+	

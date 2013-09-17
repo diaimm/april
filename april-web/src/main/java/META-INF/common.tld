@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+    version="2.1">
+    
+  <description>coupang common</description>
+  <display-name>common</display-name>
+  <tlib-version>1.0</tlib-version>
+  <short-name>coupang</short-name>
+  <uri>http://www.coupang.com/taglib/common</uri>
+
+	<tag>
+		<description>
+			paging 처리.
+		</description>
+		<name>paging</name>
+		<tag-class>com.coupang.member.component.web.taglib.paging.PagingTag</tag-class>
+		<body-content>scriptless</body-content>
+		<!-- 필수값 -->
+		<attribute>
+			<description>
+				총 아이템 수
+			</description>
+			<name>totalItemCount</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+
+		<!-- optional -->
+		<attribute>
+			<description>
+				pagingId ( default : paging )
+			</description>
+			<name>pagingId</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+				paging 처리 방식 :
+				-- 기본(FIXED_SCREEN) 페이징 영역에 나오는 페이지 고정 ( default )
+				-- CENTER_SELECTED : 선택된 페이지를 중앙에 노출되도록 ( 지원 예정 )
+			</description>
+			<name>policy</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+				page 선택시 호출할 callback용 javascript method 명 (default : onPageSelected)
+				-- 첫번째 파라미터 : pagingId
+				-- 두번째 파라미터 : 선택된 페이지 번호
+				ex) onPageSelected('pagingId', 3) -- 3페이지 선택시
+			</description>
+			<name>onClickCallback</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+				paging 지원 마크업 구조상의 최상위 wrapper(div 의 class)
+				- (default : 'text-center nav-justified')
+			</description>
+			<name>wrapperClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+				paging 지원 마크업 구조상의 ul tag의 class
+				- (default : 'pagination pagination-sm')
+			</description>
+			<name>ulClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+				screen 당 노출할 페이지 수 ( default : 10 )
+			</description>
+			<name>pageSizePerScreen</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+				한 page 당 노출할 item 수 ( default : 10 )
+			</description>
+			<name>itemCountPerPage</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+				현재 페이지
+			</description>
+			<name>current</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+				이전 스크린 이동 버튼 사용 여부(default : true)
+			</description>
+			<name>usePrev</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+				다음 스크린 이동 버튼 사용 여부(default : true)
+			</description>
+			<name>useNext</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+				첫 페이지 버튼 사용 여부(default : false, 지원 예정)
+			</description>
+			<name>useFirst</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+				마지막 페이지 버튼 사용 여부(default : false, 지원 예정)
+			</description>
+			<name>useLast</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
+	<tag>
+		<description>
+			javascript 코드를 buffer로 담아 다시 모을 수 있습니다.
+		</description>
+		<name>jsCodeCollect</name>
+		<tag-class>com.coupang.member.component.web.taglib.bufferedresponse.JavascriptCodeCollectorTag</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<description>
+				collect/flush 기본 : collect
+			</description>
+			<name>mode</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+		<attribute>
+			<description>
+				jscode 압축 여부(flush mode only)
+			</description>
+			<name>compress</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<description>
+			Refer : com.coupang.member.component.web.util.URLHelpers
+			화면에서 사용하는 공통 변수를 제공하는 Tag Lib
+		</description>
+		<name>urlInfo</name>
+		<tag-class>com.coupang.member.component.web.taglib.UrlInfoTag</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<description>
+				CURRENT_PATH
+				CURRENT_URL_BASE
+				CURRENT_URL
+				LOGIN_URL_BASE
+				FRONT_URL_BASE
+				CDN_URL_BASE
+			</description>
+			<name>key</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<!-- if/elseif/else -->
+	<tag>
+		<description>if</description>
+		<name>if</name>
+		<tag-class>com.coupang.member.component.web.taglib.ifs.IfTag</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<description>Boolean.valueOf()의 파라미터로 사용될 수 있는 적절한 값</description>
+			<name>test</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<description>elseif</description>
+		<name>elseif</name>
+		<tag-class>com.coupang.member.component.web.taglib.ifs.ElseIfTag</tag-class>
+		<body-content>scriptless</body-content>
+		<attribute>
+			<description>Boolean.valueOf()의 파라미터로 사용될 수 있는 적절한 값</description>
+			<name>test</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<description>else</description>
+		<name>else</name>
+		<tag-class>com.coupang.member.component.web.taglib.ifs.ElseTag</tag-class>
+		<body-content>scriptless</body-content>
+	</tag>
+	
+	<!-- js/css file url 생성 -->
+	<tag>
+		<description>js link를 생성한다</description>
+		<name>js</name>
+		<tag-class>com.coupang.member.component.web.compress.taglibs.JsTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>prefix</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
+	<tag>
+		<description>css link를 생성한다</description>
+		<name>css</name>
+		<tag-class>com.coupang.member.component.web.compress.taglibs.CssTag</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<name>prefix</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+</taglib>
