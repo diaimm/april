@@ -1,9 +1,0 @@
-<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="ehcache.xsd">
-	<diskStore path="/coupang/service/cache_dir/" />
-
-	<cache name="test" maxElementsInMemory="100"
-		eternal="false" timeToIdleSeconds="0" timeToLiveSeconds="5"
-		overflowToDisk="false" diskPersistent="false"
-		diskExpiryThreadIntervalSeconds="120" memoryStoreEvictionPolicy="LRU"/>
-</ehcache>

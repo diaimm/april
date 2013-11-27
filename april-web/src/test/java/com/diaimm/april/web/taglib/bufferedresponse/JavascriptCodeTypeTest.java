@@ -1,7 +1,7 @@
 /*
  * @fileName : JavascriptCodeTypeTest.java
  * @date : 2013. 5. 23.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.web.taglib.bufferedresponse;

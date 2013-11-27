@@ -1,15 +1,10 @@
 /*
  * @fileName : MapperScannerConfigurer.java
  * @date : 2013. 6. 3.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.db.mybatis.framework;
-
-import static org.springframework.util.Assert.notNull;
-
-import java.lang.annotation.Annotation;
-import java.util.Map;
 
 import org.mybatis.spring.mapper.ClassPathMapperScanner;
 import org.mybatis.spring.mapper.MapperFactoryBean;
@@ -35,6 +30,11 @@ import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+
+import java.lang.annotation.Annotation;
+import java.util.Map;
+
+import static org.springframework.util.Assert.notNull;
 
 /**
  * datasource mapper scanner configuer

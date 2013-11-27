@@ -1,14 +1,16 @@
 /*
  * @fileName : ReplicationDriver.java
  * @date : 2013. 6. 19.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.db.jdbc;
 
-import java.sql.SQLException;
-
 import com.mysql.jdbc.NonRegisteringReplicationDriver;
+
+import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
+import java.util.logging.Logger;
 
 /**
  * @author diaimm
@@ -48,5 +50,10 @@ public class ReplicationDriver extends NonRegisteringReplicationDriver implement
 	@Override
 	public boolean acceptsURL(String url) throws SQLException {
 		return url.startsWith("jdbc:mysql:replication");
+	}
+
+	@Override
+	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+		return null;
 	}
 }

@@ -1,11 +1,12 @@
 /*
  * @fileName : PropertyConfigurerTest.java
  * @date : 2013. 7. 11.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.commons.property;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -25,4 +26,9 @@ public class PropertyConfigurerTest {
 	private ApplicationContext applicationContext;
 	@Autowired
 	private ByPhase byPhase;
+
+	@Test
+	public void testIt() {
+
+	}
 }

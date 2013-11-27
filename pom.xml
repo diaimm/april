@@ -2,7 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.diaimm.april</groupId>
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+
+	<groupId>com.github.diaimm</groupId>
 	<artifactId>april</artifactId>
 	<version>3.2.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -20,7 +26,6 @@
 
 	<modules>
 		<module>april-commons</module>
-		<module>april-cache</module>
 		<module>april-db</module>
 		<module>april-notification</module>
 		<module>april-permission</module>
@@ -101,6 +106,18 @@
 				<version>1.2</version>
 			</dependency>
 
+			<!-- xss filter -->
+			<dependency>
+				<groupId>org.owasp.antisamy</groupId>
+				<artifactId>antisamy</artifactId>
+				<version>1.5.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.owasp.antisamy</groupId>
+				<artifactId>antisamy-sample-configs</artifactId>
+				<version>1.5.2</version>
+			</dependency>
+
 			<!-- Test -->
 			<dependency>
 				<groupId>junit</groupId>
@@ -130,6 +147,29 @@
 	</scm>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>${basedir}/src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>${basedir}/src/main/java</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>${basedir}/src/test/resources</directory>
+			</testResource>
+			<testResource>
+				<directory>${basedir}/src/test/java</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
+
 		<pluginManagement>
 			<plugins>
 				<plugin>
@@ -174,4 +214,43 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>sonatype-nexus-staging</id>
+			<name>Nexus Staging Repository</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Nexus Snapshots Repository</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+	<!--
+	<repositories>
+		<repository>
+			<id>sonatype-nexus-staging</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>sonatype-nexus-snapshots</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<updatePolicy>always</updatePolicy>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	-->
 </project>

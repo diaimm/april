@@ -1,7 +1,7 @@
 /*
  * @fileName : SqlMapClientTemplateInitializer.java
  * @date : 2013. 5. 30.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.db.mybatis;
@@ -11,9 +11,6 @@ import com.diaimm.april.commons.util.FreeMarkerTemplateBuilder.AttributeBuilder;
 import com.diaimm.april.db.mybatis.datasource.RoutingDataSource;
 import com.diaimm.april.db.mybatis.datasource.RoutingTransactionManager;
 import com.diaimm.april.db.mybatis.framework.DatasourceMapperScannerConfigurer;
-import com.coupang.member.db.util.*;
-import com.diaimm.april.db.mybatis.datasource.RoutingDataSource;
-import com.diaimm.april.db.mybatis.datasource.RoutingTransactionManager;
 import com.diaimm.april.db.util.*;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;

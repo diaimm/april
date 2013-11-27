@@ -1,7 +1,7 @@
 /*
  * @fileName : ServiceUserUtilsTest.java
  * @date : 2013. 7. 2.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.coupang.member.commons.service.util;

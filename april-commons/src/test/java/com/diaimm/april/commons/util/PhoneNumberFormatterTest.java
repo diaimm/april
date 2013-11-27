@@ -1,7 +1,7 @@
 /*
  * @fileName : PhoneNumberFormatterTest.java
  * @date : 2013. 7. 10.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.commons.util;

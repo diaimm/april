@@ -1,7 +1,7 @@
 /*
  * @fileName : Cetificator.java
  * @date : 2013. 7. 9.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.permission.certification;

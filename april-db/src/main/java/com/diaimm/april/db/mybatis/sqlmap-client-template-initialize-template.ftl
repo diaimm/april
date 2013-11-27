@@ -45,13 +45,13 @@
 			<property name="dataSource" ref="${dataSource.id}${dataSource.DATASOURCE.postFix}"/>
 		</bean>
 		
-		<bean id="${dataSource.id}${dataSource.SESSION_TEMPLATE.postFix}" class="com.coupang.member.db.mybatis.datasource.RoutingSqlSessionTemplate">
+		<bean id="${dataSource.id}${dataSource.SESSION_TEMPLATE.postFix}" class="com.diaimm.april.db.mybatis.datasource.RoutingSqlSessionTemplate">
 			<constructor-arg index="0" value="${dataSource.id}${dataSource.DATASOURCE.postFix}" />
 			<constructor-arg index="1" ref="${dataSource.id}${dataSource.SESSION_FACTORY.postFix}" />
 		</bean>
 
 		<#if dataSource.mapperBases??>
-			<bean id="${dataSource.id}${dataSource.MAPPER_SCANNER.postFix}" class="com.coupang.member.db.mybatis.framework.DatasourceMapperScannerConfigurer">
+			<bean id="${dataSource.id}${dataSource.MAPPER_SCANNER.postFix}" class="com.diaimm.april.db.mybatis.framework.DatasourceMapperScannerConfigurer">
 				<property name="datasourceId" value="${dataSource.id}"/>
 				<property name="basePackage" value="${dataSource.mapperBases}" />
 				<property name="sqlSessionTemplateBeanName" value="${dataSource.id}${dataSource.SESSION_TEMPLATE.postFix}" />

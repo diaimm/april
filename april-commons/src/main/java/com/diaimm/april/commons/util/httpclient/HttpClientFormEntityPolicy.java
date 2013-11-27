@@ -1,7 +1,7 @@
 /*
  * @fileName : HttpClientFormEntityPolicy.java
  * @date : 2013. 8. 19.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.commons.util.httpclient;

@@ -1,7 +1,7 @@
 /*
  * @fileName : QUeryParserUtil.java
  * @date : 2013. 6. 7.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.db.mybatis.blocker;

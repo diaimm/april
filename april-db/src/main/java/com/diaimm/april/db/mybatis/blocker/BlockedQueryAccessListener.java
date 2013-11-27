@@ -1,7 +1,7 @@
 /*
  * @fileName : ExecutionBlockerListener.java
  * @date : 2013. 6. 5.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.db.mybatis.blocker;

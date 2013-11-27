@@ -1,12 +1,13 @@
 /*
  * @fileName : TemplateMaker.java
  * @date : 2013. 5. 30.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.commons.util;
 
 import com.diaimm.april.commons.Env;
+import com.google.common.collect.Maps;
 import freemarker.cache.FileTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
@@ -17,16 +18,15 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 
 import java.io.*;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author diaimm
- * 
+ *
  */
 public class FreeMarkerTemplateBuilder {
 	private final String template;
-	private final Map<String, Object> contextRoot = new HashMap<String, Object>();
+	private final Map<String, Object> contextRoot = Maps.newHashMap();
 	private final AttributeBuilder attributeBuilder = new AttributeBuilder();
 	private String root = "";
 	private Class<?> clazz = this.getClass();

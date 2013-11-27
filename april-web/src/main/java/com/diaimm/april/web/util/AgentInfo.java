@@ -1,17 +1,17 @@
 /*
  * @fileName : RequestHelper.java
  * @date : 2013. 7. 2.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.web.util;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.mobile.device.Device;
 import org.springframework.mobile.device.DeviceResolver;
 import org.springframework.mobile.device.LiteDeviceResolver;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author diaimm

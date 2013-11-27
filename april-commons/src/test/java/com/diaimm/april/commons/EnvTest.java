@@ -1,7 +1,7 @@
 /*
  * @fileName : EnvTest.java
  * @date : 2013. 6. 3.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.commons;

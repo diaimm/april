@@ -1,12 +1,10 @@
 /*
  * @fileName : OriginalHttpServletRequestWebArgumentResolver.java
  * @date : 2013. 6. 10.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.web.xss.antisami;
-
-import javax.servlet.ServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.core.MethodParameter;
@@ -14,6 +12,8 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+
+import javax.servlet.ServletRequest;
 
 /**
  * @author diaimm
@@ -36,7 +36,7 @@ public class OriginalParamArgumentResolver implements HandlerMethodArgumentResol
 	 */
 	@Override
 	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest,
-			WebDataBinderFactory binderFactory) throws Exception {
+		WebDataBinderFactory binderFactory) throws Exception {
 		if (String.class.isAssignableFrom(parameter.getParameterType())) {
 			return getOriginalServletRequest(webRequest).getParameter(getParamName(parameter));
 		} else if (String[].class.isAssignableFrom(parameter.getParameterType())) {
@@ -52,9 +52,9 @@ public class OriginalParamArgumentResolver implements HandlerMethodArgumentResol
 	private ServletRequest getOriginalServletRequest(NativeWebRequest webRequest) {
 		Object nativeRequest = webRequest.getNativeRequest();
 		if (nativeRequest instanceof AntiXSSRequestWrapper) {
-			return ((AntiXSSRequestWrapper) nativeRequest).getRequest();
+			return ((AntiXSSRequestWrapper)nativeRequest).getRequest();
 		}
-		return (ServletRequest) webRequest.getNativeRequest();
+		return (ServletRequest)webRequest.getNativeRequest();
 	}
 
 	/**

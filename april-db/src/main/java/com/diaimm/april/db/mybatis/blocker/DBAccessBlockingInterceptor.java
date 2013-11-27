@@ -1,15 +1,13 @@
 /*
  * @fileName : DBAccessBlockingInterceptor.java
  * @date : 2013. 6. 5.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.db.mybatis.blocker;
 
 import com.diaimm.april.commons.Env;
 import com.diaimm.april.commons.util.FreeMarkerTemplateBuilder;
-import com.diaimm.april.db.mybatis.datasource.RoutingSqlSessionTemplate;
-
 import com.diaimm.april.db.mybatis.datasource.RoutingSqlSessionTemplate;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;

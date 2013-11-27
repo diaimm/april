@@ -1,14 +1,14 @@
 /*
  * @fileName : QueryExecutionListener.java
  * @date : 2013. 6. 4.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.db.mybatis.framework;
 
-import java.sql.Connection;
-
 import org.apache.ibatis.session.Configuration;
+
+import java.sql.Connection;
 
 /**
  * @author diaimm

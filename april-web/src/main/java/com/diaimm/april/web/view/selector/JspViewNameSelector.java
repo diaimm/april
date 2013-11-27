@@ -1,14 +1,14 @@
 /*
  * @fileName : MobileDetectingViewNameSelector.java
  * @date : 2013. 7. 2.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.web.view.selector;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author diaimm

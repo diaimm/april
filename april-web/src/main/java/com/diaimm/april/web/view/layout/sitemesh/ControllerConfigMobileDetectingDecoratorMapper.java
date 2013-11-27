@@ -1,7 +1,7 @@
 /**
  * @fileName : ControllerConfigDecoratorMapper.java
  * @date : 2013. 5. 22.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.web.view.layout.sitemesh;

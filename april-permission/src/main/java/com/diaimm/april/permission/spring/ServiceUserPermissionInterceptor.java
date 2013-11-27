@@ -1,7 +1,7 @@
 /*
  * @fileName : UserPermissionInterceptor.java
  * @date : 2013. 5. 27.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.permission.spring;

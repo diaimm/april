@@ -1,7 +1,7 @@
 /*
  * @fileName : ByPhaseProvider.java
  * @date : 2013. 8. 9.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.web.view.layout.data.provider;

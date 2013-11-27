@@ -1,7 +1,7 @@
 /*
  * @fileName : ServiceUserAuthCookieValueHander.java
  * @date : 2013. 6. 4.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.permission.spring;

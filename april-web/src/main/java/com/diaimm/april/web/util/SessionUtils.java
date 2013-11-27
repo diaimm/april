@@ -3,17 +3,16 @@
  */
 package com.diaimm.april.web.util;
 
+import com.google.common.base.Charsets;
+import com.google.common.primitives.Longs;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
+
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.zip.CRC32;
-
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Hex;
-
-import com.google.common.base.Charsets;
-import com.google.common.primitives.Longs;
 
 /**
  * @author 산토리니 윤영욱 (readytogo@coupang.com)
@@ -27,8 +26,8 @@ public final class SessionUtils {
 			return false;
 		}
 		try {
-			byte[] data = (byte[]) hexCoder.decode(sid.substring(0, 32));
-			byte[] checksum = (byte[]) hexCoder.decode(sid.substring(32, 32 + 8));
+			byte[] data = (byte[])hexCoder.decode(sid.substring(0, 32));
+			byte[] checksum = (byte[])hexCoder.decode(sid.substring(32, 32 + 8));
 			return Arrays.equals(crc32(data), checksum);
 		} catch (DecoderException e) {
 			throw new RuntimeException("Error while checking validity of the session id", e);

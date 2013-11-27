@@ -1,7 +1,7 @@
 /*
  * @fileName : InjectionDataAware.java
  * @date : 2013. 6. 10.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.web.view.layout.data;

@@ -1,7 +1,7 @@
 /*
  * @fileName : MapperRegistrableAdapter.java
  * @date : 2013. 6. 18.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.db.mybatis.support;

@@ -1,7 +1,7 @@
 /**
  * @fileName : LayoutConfigPreset.java
  * @date : 2013. 4. 12.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.web.view.layout.annotations;

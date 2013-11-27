@@ -2,11 +2,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.diaimm.april</groupId>
+		<groupId>com.github.diaimm</groupId>
 		<artifactId>april</artifactId>
 		<version>3.2.3-SNAPSHOT</version>
 	</parent>
-	<groupId>com.diaimm.april</groupId>
+	<groupId>com.github.diaimm</groupId>
 	<artifactId>april-web</artifactId>
 	<name>april-web</name>
 	<packaging>jar</packaging>
@@ -46,7 +46,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.diaimm.april</groupId>
+			<groupId>com.github.diaimm</groupId>
 			<artifactId>april-commons</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>provided</scope>

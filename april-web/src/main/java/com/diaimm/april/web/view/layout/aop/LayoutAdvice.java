@@ -6,8 +6,9 @@
  */
 package com.diaimm.april.web.view.layout.aop;
 
-import java.lang.reflect.Method;
-
+import com.diaimm.april.web.view.layout.annotations.Layout;
+import com.diaimm.april.web.view.layout.aop.LayoutHolder.LayoutInfo;
+import com.diaimm.april.web.view.layout.bean.LayoutConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.MethodBeforeAdvice;
@@ -15,9 +16,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import com.diaimm.april.web.view.layout.annotations.Layout;
-import com.diaimm.april.web.view.layout.aop.LayoutHolder.LayoutInfo;
-import com.diaimm.april.web.view.layout.bean.LayoutConfig;
+import java.lang.reflect.Method;
 
 /**
  * controller의 handler method 호출 전에 사용될 advice, LayoutInfo 를 생성한다.
@@ -25,8 +24,8 @@ import com.diaimm.april.web.view.layout.bean.LayoutConfig;
  * @author diaimm
  */
 public class LayoutAdvice implements MethodBeforeAdvice, ApplicationContextAware {
-	private String lastConfigInstanceID = null;
 	private final Logger logger = LoggerFactory.getLogger(LayoutAdvice.class);
+	private String lastConfigInstanceID = null;
 	private ApplicationContext applicationContext;
 
 	/**

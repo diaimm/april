@@ -1,14 +1,13 @@
 /*
  * @fileName : DBAccessBlockerClientConfigurere.java
  * @date : 2013. 6. 5.
- * @author : diaimm. Santorini team, Agile, Coupang.
+ * @author : diaimm.
  * @desc : 
  */
 package com.diaimm.april.db.mybatis.blocker;
 
-import java.util.List;
-import java.util.Set;
-
+import com.diaimm.april.db.mybatis.blocker.BlockQueryManager.BlockQueryManagerRequestCommand;
+import com.google.common.collect.Lists;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -26,8 +25,8 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.util.CollectionUtils;
 
-import com.diaimm.april.db.mybatis.blocker.BlockQueryManager.BlockQueryManagerRequestCommand;
-import com.google.common.collect.Lists;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author diaimm
