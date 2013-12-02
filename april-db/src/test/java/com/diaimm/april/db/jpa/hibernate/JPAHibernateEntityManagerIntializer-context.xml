@@ -19,7 +19,7 @@
 	<bean class="com.diaimm.april.db.jpa.hibernate.JPAHibernateEntityManagerInitializer">
 		<property name="properties">
 			<list>
-				<value>classpath:com/coupang/member/db/jpa/hibernate/dbs</value>
+				<value>classpath:com/diaimm/april/db/jpa/hibernate/dbs</value>
 			</list>
 		</property>
 	</bean>

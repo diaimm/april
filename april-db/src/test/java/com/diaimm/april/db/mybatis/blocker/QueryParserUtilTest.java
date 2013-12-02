@@ -9,7 +9,6 @@ package com.diaimm.april.db.mybatis.blocker;
 import com.diaimm.april.db.mybatis.blocker.QueryParserUtil.TableNamePatterns;
 import junit.framework.Assert;
 import org.apache.commons.io.IOUtils;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.BufferedReader;
@@ -44,7 +43,6 @@ public class QueryParserUtilTest {
 		}
 	}
 
-	@Ignore
 	@Test
 	public void selectTableTest() {
 		String sampleQuery = getSampleQuery();
@@ -62,7 +60,6 @@ public class QueryParserUtilTest {
 //        Assert.assertEquals(8, tableNames.size());
 	}
 
-	@Ignore
 	@Test
 	public void insertTableTest() {
 		String sampleQuery = getSampleQuery();
@@ -81,7 +78,6 @@ public class QueryParserUtilTest {
 //		Assert.assertTrue(tableNames.contains("INSERT_TABLE4"));
 	}
 
-	@Ignore
 	@Test
 	public void deleteTableTest() {
 		String sampleQuery = getSampleQuery();
@@ -99,7 +95,6 @@ public class QueryParserUtilTest {
 		Assert.assertEquals(4, tableNames.size());
 	}
 
-	@Ignore
 	@Test
 	public void updateTableTest() {
 		String sampleQuery = getSampleQuery();
@@ -123,7 +118,7 @@ public class QueryParserUtilTest {
 	private String getSampleQuery() {
 		InputStream resourceAsStream = null;
 		try {
-			resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("com/coupang/common/db/mybatis/blocker/sampleSql.txt");
+			resourceAsStream = this.getClass().getClassLoader().getResourceAsStream("com/diaimm/april/db/mybatis/blocker/sampleSql.txt");
 			BufferedReader reader = new BufferedReader(new InputStreamReader(resourceAsStream));
 
 			StringBuffer sampleQuery = new StringBuffer();

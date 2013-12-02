@@ -12,7 +12,6 @@ import com.diaimm.april.db.util.DataSourceIntializePropertiesUtils;
 import freemarker.core.InvalidReferenceException;
 import freemarker.template.TemplateException;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.BeansException;
@@ -74,7 +73,7 @@ public class MapperScannerInitializerTest {
 		target.setApplicationContext(applicationContext);
 
 		List<String> locations = new ArrayList<String>();
-		locations.add("classpath:com/coupang/member/db/mybatis/dbs");
+		locations.add("classpath:com/diaimm/april/db/mybatis/dbs");
 		target.setProperties(locations);
 
 		try {
@@ -86,7 +85,6 @@ public class MapperScannerInitializerTest {
 		}
 	}
 
-	@Ignore
 	@Test
 	public void getDataSourceBeanConfigurationTest() {
 		MapperScannerInitializer target = new MapperScannerInitializer();
@@ -145,7 +143,6 @@ public class MapperScannerInitializerTest {
 		}
 	}
 
-	@Ignore
 	@Test
 	public void initializeSqlMapClientTemplateTest() {
 		final Set<String> isCalled = new HashSet<String>();

@@ -15,8 +15,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.diaimm.april.db.util.DataSourceIntializePropertiesUtils;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
@@ -33,7 +31,7 @@ public class DataSourceIntializePropertiesUtilsTest {
 
 	@Test
 	public void getResourcesTest() throws IOException {
-		String location = "classpath:com/coupang/member/db/mybatis/dbs" + "/**/*.properties";
+		String location = "classpath:com/diaimm/april/db/mybatis/dbs" + "/**/*.properties";
 		Resource[] resources = applicationContext.getResources(location);
 		Assert.assertEquals(2, resources.length);
 	}
@@ -41,7 +39,7 @@ public class DataSourceIntializePropertiesUtilsTest {
 	@Test
 	public void SqlSessionProvertiesListProviderTest() {
 		try {
-			String location = "classpath:com/coupang/member/db/mybatis/dbs";
+			String location = "classpath:com/diaimm/april/db/mybatis/dbs";
 
 			List<Properties> propertiesList = DataSourceIntializePropertiesUtils.getPropertiesList(applicationContext, location);
 			Assert.assertEquals(2, propertiesList.size());
@@ -51,7 +49,7 @@ public class DataSourceIntializePropertiesUtilsTest {
 		}
 
 		try {
-			String location = "classpath:com/coupang/member/db/mybatis/dbs/login.properties";
+			String location = "classpath:com/diaimm/april/db/mybatis/dbs/login.properties";
 			List<Properties> propertiesList = DataSourceIntializePropertiesUtils.getPropertiesList(applicationContext, location);
 			Assert.assertEquals(1, propertiesList.size());
 		} catch (Exception e) {

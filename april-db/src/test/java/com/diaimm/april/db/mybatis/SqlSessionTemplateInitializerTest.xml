@@ -22,7 +22,7 @@
 	<bean class="com.diaimm.april.db.mybatis.MapperScannerInitializer">
 		<property name="properties">
 			<list>
-				<value>classpath:com/coupang/member/db/mybatis/dbs</value>
+				<value>classpath:com/diaimm/april/db/mybatis/dbs</value>
 			</list>
 		</property>
 	</bean>
