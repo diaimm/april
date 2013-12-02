@@ -33,9 +33,8 @@ class ServiceUserArgumentResolver implements HandlerMethodArgumentResolver {
 	 *      org.springframework.web.bind.support.WebDataBinderFactory)
 	 */
 	@Override
-	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
-
-		ServiceUser serviceUser = (ServiceUser)webRequest.getAttribute(ServiceUserInterceptor.USER_MODEL_ATTRIBUTE_KEY, NativeWebRequest.SCOPE_REQUEST);
-		return serviceUser;
+	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest,
+		WebDataBinderFactory binderFactory) throws Exception {
+		return (ServiceUser)webRequest.getAttribute(ServiceUserInterceptor.USER_MODEL_ATTRIBUTE_KEY, NativeWebRequest.SCOPE_REQUEST);
 	}
 }

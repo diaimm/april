@@ -11,6 +11,5 @@ package com.diaimm.april.permission.permission;
  * @author diaimm
  * 
  */
-public enum AuthenticationType {
-	DEFAULT, PC_POPUP, MOBILE
+public interface AuthenticationType {
 }

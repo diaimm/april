@@ -6,21 +6,13 @@
  */
 package com.diaimm.april.permission.model;
 
+import java.util.Date;
+
 /**
  * @author diaimm
  * 
  */
 public interface ServiceUser {
-	public static final String LOGIN_DATE_FORMAT = "yyyyMMddHHmmss";
-
-	/**
-	 * 회원 번호
-	 * 
-	 * @return
-	 */
-	//String getSrl();
-	String getMemberId();
-
 	/**
 	 * 회원 id
 	 * 
@@ -41,19 +33,9 @@ public interface ServiceUser {
 	boolean isLogin();
 
 	/**
-	 * yyyyMMddHHmmss
-	 * 
 	 * @return
 	 */
-	//String getLoginDate();
-	String getLastLoginDttm();
-
-	/**
-	 * 로그인 저장 여부
-	 * 
-	 * @return
-	 */
-	boolean isRemember();
+	Date getLoginDate();
 
 	/**
 	 * @return
@@ -68,46 +50,11 @@ public interface ServiceUser {
 	/**
 	 * @return
 	 */
-	String getBirthday();
-
-	/**
-	 * @return
-	 */
 	// String getGener(); 
-	String getGenderType();
+	Gender getGenderType();
 
 	/**
 	 * @return
 	 */
-	// String getVerifiedYN(); 
-	String getRealNameVerified();
-
-	/**
-	 * @return
-	 */
-	// String getToken(); 
-	String getRecommendationJoinToken();
-
-	/**
-	 * @return
-	 */
-	// String getAdminType(); 
-	String getMemberLevelType();
-
-	/**
-	 * @return
-	 */
-	// String getMailYN();	
-	String getAgreeEmail();
-
-	/**
-	 * @return
-	 */
-	// String getSmsYN();	
-	String getAgreeSMS();
-
-	/**
-	 * @return
-	 */
-	String getSuperYN();
+	boolean getRealNameVerified();
 }

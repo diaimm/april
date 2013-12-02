@@ -43,34 +43,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.coupang.commons</groupId>
-			<artifactId>commons</artifactId>
+			<groupId>com.github.diaimm</groupId>
+			<artifactId>april-commons</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.coupang.commons</groupId>
-			<artifactId>commons-db</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.coupang.commons</groupId>
-			<artifactId>commons-enum</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.coupang.commons</groupId>
-			<artifactId>commons-web</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-
-		<!-- web provided -->
-		<dependency>
-			<groupId>javax.servlet.jsp</groupId>
-			<artifactId>jsp-api</artifactId>
-			<version>2.1</version>
 			<scope>provided</scope>
 		</dependency>
 
@@ -82,17 +57,10 @@
 		</dependency>
 
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
 			<scope>provided</scope>
-		</dependency>
-		
-		<!-- nice -->
-		<dependency>
-			<groupId>nice.cryptix</groupId>
-			<artifactId>VNOInterop</artifactId>
-			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -6,16 +6,8 @@
  */
 package com.diaimm.april.permission.spring;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.diaimm.april.permission.model.ServiceUser;
-import org.apache.commons.lang.StringUtils;
+import com.diaimm.april.commons.ByPhase;
+import com.diaimm.april.permission.ServiceUserConstantsAware;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -29,15 +21,10 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
-import com.coupang.commons.ByPhase;
-import com.coupang.commons.crypto.AES.AESType;
-import com.coupang.commons.crypto.Crypto;
-import com.coupang.commons.web.util.CookieBox;
-import com.diaimm.april.permission.ServiceUserConstantsAware;
-import com.diaimm.april.permission.model.CookieBaseServiceUserFactory;
-import com.diaimm.april.permission.model.ServiceUser;
-import com.diaimm.april.permission.spring.ServiceUserAuthCookieValueHandler.Cookies;
-import com.google.common.io.Closeables;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author diaimm
@@ -46,7 +33,6 @@ import com.google.common.io.Closeables;
 public class ServiceUserInterceptor implements HandlerInterceptor, ServiceUserConstantsAware, BeanFactoryAware, InitializingBean {
 	public static final String USER_MODEL_ATTRIBUTE_KEY = ServiceUserInterceptor.class.getCanonicalName() + "_USER";
 	private BeanFactory beanFactory;
-
 	@Autowired
 	private ByPhase byPhase;
 
@@ -56,50 +42,7 @@ public class ServiceUserInterceptor implements HandlerInterceptor, ServiceUserCo
 	 */
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-		ServiceUser serviceUser = CookieBaseServiceUserFactory.DEFAULT_USER;
-
-		String encryptedUserInfo = new CookieBox(request).getValue(ServiceUserAuthCookieValueHandler.Cookies.LOGIN_USER.getKey() + "_" + byPhase.getCookiePostFix());
-
-		// 쿠키 값이 존재할 경우
-		try {
-			if (StringUtils.isNotBlank(encryptedUserInfo)) {
-				String orgCookieValue = Crypto.aes(AESType.AES128).decrypt(encryptedUserInfo, ServiceUserAuthCookieValueHandler.USER_INFO_CRYPT_KEY);
-				serviceUser = ServiceUserAuthCookieValueHandler.toServiceUser(orgCookieValue, request);
-			}
-		} catch (Exception e) {
-		}
-
-		request.setAttribute(USER_MODEL_ATTRIBUTE_KEY, serviceUser);
-
-		// 로그인 안하거나 로그인 정보 취득에 실패한 사용자
-		if (CookieBaseServiceUserFactory.DEFAULT_USER.equals(serviceUser)) {
-			removeAuthCookie(response);
-		} else {
-			// 로그인 유지를 위하여 쿠키를 다시 쓴다.
-			keepAuthCookie(response, serviceUser);
-		}
-
 		return true;
-	}
-
-	/**
-	 * 로그인 쿠키 삭제
-	 */
-	private void removeAuthCookie(HttpServletResponse response) {
-		ServiceUserAuthCookieValueHandler.Cookies.LOGIN_USER.burnCookie(response, "", false, byPhase.getPhase());
-		ServiceUserAuthCookieValueHandler.Cookies.MEMERSRL.burnCookie(response, "", false, byPhase.getPhase());
-	}
-
-	/**
-	 * 로그인 쿠기 유지
-	 * 
-	 * @param response
-	 * @param serviceUser
-	 * @throws Exception
-	 */
-	private void keepAuthCookie(HttpServletResponse response, ServiceUser serviceUser) throws Exception {
-		ServiceUserAuthCookieValueHandler.Cookies.LOGIN_USER.burnCookie(response, ServiceUserAuthCookieValueHandler.toCookeiValue(serviceUser), true, byPhase.getPhase());
-		ServiceUserAuthCookieValueHandler.Cookies.MEMERSRL.burnCookie(response, serviceUser.getMemberId(), true, byPhase.getPhase());
 	}
 
 	/**
@@ -144,17 +87,11 @@ public class ServiceUserInterceptor implements HandlerInterceptor, ServiceUserCo
 		ServiceUserArgumentResolver serviceUserArgumentResolver = beanFactory.getBean(ServiceUserArgumentResolver.class);
 
 		RequestMappingHandlerAdapter requestMappingHandlerAdapter = beanFactory.getBean(RequestMappingHandlerAdapter.class);
-		List<HandlerMethodArgumentResolver> argumentResolvers = new ArrayList<HandlerMethodArgumentResolver>(requestMappingHandlerAdapter.getArgumentResolvers().getResolvers());
+		List<HandlerMethodArgumentResolver> argumentResolvers = new ArrayList<HandlerMethodArgumentResolver>(
+			requestMappingHandlerAdapter.getArgumentResolvers().getResolvers());
 		argumentResolvers.add(0, serviceUserArgumentResolver);
 
 		requestMappingHandlerAdapter.setArgumentResolvers(argumentResolvers);
 		requestMappingHandlerAdapter.setInitBinderArgumentResolvers(argumentResolvers);
-
-		// Load Cookie key.dat
-		InputStream input = new FileInputStream(ServiceUserAuthCookieValueHandler.USER_INFO_CRYPT_KEY_FILE);
-		ServiceUserAuthCookieValueHandler.USER_INFO_CRYPT_KEY = Crypto.md5().getBase64(input);
-
-		// Close stream
-		Closeables.closeQuietly(input);
 	}
 }

@@ -6,30 +6,23 @@
  */
 package com.diaimm.april.permission.spring;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.diaimm.april.commons.ByPhase;
 import com.diaimm.april.permission.ServiceUserConstantsAware;
 import com.diaimm.april.permission.model.ServiceUser;
 import com.diaimm.april.permission.permission.AuthenticationType;
+import com.diaimm.april.permission.permission.AuthenticationTypeFactory;
 import com.diaimm.april.permission.permission.ServicePermission;
+import com.diaimm.april.permission.permission.ServicePermissionFactory;
 import com.diaimm.april.permission.permission.annotation.Permission;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.mvc.WebContentInterceptor;
 
-import com.coupang.commons.ByPhase;
-import com.diaimm.april.permission.ServiceUserConstantsAware;
-import com.diaimm.april.permission.model.ServiceUser;
-import com.diaimm.april.permission.permission.AuthenticationType;
-import com.diaimm.april.permission.permission.ServicePermission;
-import com.diaimm.april.permission.permission.annotation.Permission;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 /**
  * @author diaimm
@@ -38,6 +31,13 @@ import com.diaimm.april.permission.permission.annotation.Permission;
 public class ServiceUserPermissionInterceptor extends WebContentInterceptor implements ServiceUserConstantsAware {
 	@Autowired
 	private ByPhase byPhase;
+	private AuthenticationTypeFactory authenticationTypeFactory;
+	private ServicePermissionFactory servicePermissionFactory;
+
+	public ServiceUserPermissionInterceptor(AuthenticationTypeFactory authenticationTypeFactory, ServicePermissionFactory servicePermissionFactory) {
+		this.authenticationTypeFactory = authenticationTypeFactory;
+		this.servicePermissionFactory = servicePermissionFactory;
+	}
 
 	/**
 	 * @see org.springframework.web.servlet.mvc.WebContentInterceptor#preHandle(javax.servlet.http.HttpServletRequest,
@@ -62,7 +62,8 @@ public class ServiceUserPermissionInterceptor extends WebContentInterceptor impl
 	 */
 	boolean checkPermissions(HttpServletRequest request, HttpServletResponse response, Object handler, RequiredPermissionInfo requiredPermissionInfo) {
 		ServiceUser serviceUser = (ServiceUser)request.getAttribute(ServiceUserInterceptor.USER_MODEL_ATTRIBUTE_KEY);
-		for (ServicePermission servicePermission : ServicePermission.sort(requiredPermissionInfo.requiredPermissions)) {
+
+		for (ServicePermission servicePermission : getSortedPermissions(requiredPermissionInfo)) {
 			/*
 			 * 로그인 회원 정보와 비교하여 접근 권한 처리 
 			 */
@@ -74,6 +75,18 @@ public class ServiceUserPermissionInterceptor extends WebContentInterceptor impl
 		return true;
 	}
 
+	private List<ServicePermission> getSortedPermissions(RequiredPermissionInfo requiredPermissionInfo) {
+		List<ServicePermission> requiredPermissions = new ArrayList<ServicePermission>(requiredPermissionInfo.requiredPermissions);
+		Collections.sort(requiredPermissions, new Comparator<ServicePermission>() {
+			@Override
+			public int compare(ServicePermission o1, ServicePermission o2) {
+				return o1.getOrder() - o2.getOrder();
+			}
+		});
+
+		return requiredPermissions;
+	}
+
 	/**
 	 * @param request
 	 * @param response
@@ -83,13 +96,13 @@ public class ServiceUserPermissionInterceptor extends WebContentInterceptor impl
 	 * @param servicePermission
 	 * @return
 	 */
-	boolean checkByPermissionChecker(HttpServletRequest request, HttpServletResponse response, Object handler, RequiredPermissionInfo requiredPermissionInfo, ServiceUser serviceUser,
-		ServicePermission servicePermission) {
+	boolean checkByPermissionChecker(HttpServletRequest request, HttpServletResponse response, Object handler,
+		RequiredPermissionInfo requiredPermissionInfo, ServiceUser serviceUser, ServicePermission servicePermission) {
 		return servicePermission.authorized((HandlerMethod)handler, serviceUser, request, response, requiredPermissionInfo.authenticateType, byPhase);
 	}
 
 	/**
-	 * @param method
+	 * @param handlerMethod
 	 * @return
 	 */
 	RequiredPermissionInfo getRequiredPermissions(HandlerMethod handlerMethod) {
@@ -111,13 +124,13 @@ public class ServiceUserPermissionInterceptor extends WebContentInterceptor impl
 	}
 
 	/**
-	 * @param ret
-	 * @param classPermission
+	 * @param requiredPermissionInfo
+	 * @param permission
 	 */
 	private void overridePermission(RequiredPermissionInfo requiredPermissionInfo, Permission permission) {
 		if (permission != null) {
-			requiredPermissionInfo.setAuthenticateType(permission.authType());
-			requiredPermissionInfo.addRequiredPermissions(permission.required().getFullPermissionCheckers());
+			requiredPermissionInfo.setAuthenticateType(authenticationTypeFactory.create(permission));
+			requiredPermissionInfo.addRequiredPermissions(servicePermissionFactory.create(permission));
 		}
 	}
 
@@ -146,19 +159,19 @@ public class ServiceUserPermissionInterceptor extends WebContentInterceptor impl
 		}
 
 		/**
-		 * @param requiredPermissions
-		 *            the requiredPermissions to set
-		 */
-		void addRequiredPermissions(Collection<ServicePermission> requiredPermissions) {
-			this.requiredPermissions.addAll(requiredPermissions);
-		}
-
-		/**
 		 * @param authenticateType
 		 *            the authenticateType to set
 		 */
 		void setAuthenticateType(AuthenticationType authenticateType) {
 			this.authenticateType = authenticateType;
+		}
+
+		/**
+		 * @param requiredPermissions
+		 *            the requiredPermissions to set
+		 */
+		void addRequiredPermissions(ServicePermission... requiredPermissions) {
+			this.requiredPermissions.addAll(Arrays.asList(requiredPermissions));
 		}
 	}
 }
