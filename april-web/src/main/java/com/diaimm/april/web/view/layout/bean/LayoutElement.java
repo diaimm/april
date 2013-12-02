@@ -8,7 +8,6 @@ package com.diaimm.april.web.view.layout.bean;
 
 /**
  * @author diaimm
- * @author 산토리니 윤영욱 
  * @version 2013.05.02
  */
 public interface LayoutElement {

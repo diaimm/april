@@ -3,20 +3,18 @@
  */
 package com.diaimm.april.web.util;
 
+import com.diaimm.april.commons.Env;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.diaimm.april.commons.Env;
-
 /**
- * @author 산토리니 윤영욱 (readytogo@coupang.com)
  * @version 2013. 6. 3.
  */
 public final class CookieBox {

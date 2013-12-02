@@ -6,17 +6,15 @@
  */
 package com.diaimm.april.web.view.layout.aop;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Method;
-import java.security.Principal;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
+import com.diaimm.april.web.view.layout.annotations.Layout.DefaultValues;
+import com.diaimm.april.web.view.layout.aop.LayoutHolder.LayoutInfo;
+import com.diaimm.april.web.view.layout.bean.LayoutConfig;
+import org.junit.Assert;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletInputStream;
@@ -25,17 +23,13 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.UrlBasedViewResolver;
-
-import com.diaimm.april.web.view.layout.annotations.Layout.DefaultValues;
-import com.diaimm.april.web.view.layout.aop.LayoutHolder.LayoutInfo;
-import com.diaimm.april.web.view.layout.bean.LayoutConfig;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Method;
+import java.security.Principal;
+import java.util.*;
 
 /**
  * @author diaimm
@@ -83,8 +77,8 @@ public class LayoutHandlerInterceptorTest {
 		};
 		try {
 			HandlerMethod handlerMethod = new HandlerMethod(this, "generateKeyTest");
-			Assert.assertEquals("com.coupang.common.web.view.layout.aop.LayoutHandlerInterceptorTest:generateKeyTest",
-					target.generateKey(handlerMethod.getBeanType(), "generateKeyTest"));
+			Assert.assertEquals("com.diaimm.april.web.view.layout.aop.LayoutHandlerInterceptorTest:generateKeyTest",
+				target.generateKey(handlerMethod.getBeanType(), "generateKeyTest"));
 		} catch (NoSuchMethodException e) {
 			Assert.fail();
 		}
@@ -184,19 +178,12 @@ public class LayoutHandlerInterceptorTest {
 	public void postHandleTest() {
 		final Set<String> called = new HashSet<String>();
 		AbstractLayoutHandlerInterceptor target = new AbstractLayoutHandlerInterceptor() {
-			/**
-			 * @see com.coupang.common.web.view.layout.aop.AbstractLayoutHandlerInterceptor#getInitializedLayoutConfig(javax.servlet.http.HttpServletRequest,
-			 *      javax.servlet.http.HttpServletResponse, org.springframework.web.servlet.ModelAndView)
-			 */
 			@Override
 			LayoutConfig getInitializedLayoutConfig(HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView) {
 				called.add("getInitializedLayoutConfig");
 				return null;
 			}
 
-			/**
-			 * @see com.coupang.common.web.view.layout.aop.AbstractLayoutHandlerInterceptor#isAvoidLayoutUsePrefix(org.springframework.web.servlet.ModelAndView)
-			 */
 			@Override
 			boolean isAvoidLayoutUsePrefix(ModelAndView modelAndView) {
 				called.add("isAvoidLayoutUsePrefix");
@@ -214,26 +201,16 @@ public class LayoutHandlerInterceptorTest {
 				called.add("setContentsBodyView");
 			}
 
-			/**
-			 * @see com.coupang.common.web.view.layout.aop.AbstractLayoutHandlerInterceptor#processPresetLayoutConfigurerMethod(javax.servlet.http.HttpServletRequest,
-			 *      javax.servlet.http.HttpServletResponse, org.springframework.web.servlet.ModelAndView,
-			 *      com.coupang.common.web.view.layout.bean.LayoutConfig)
-			 */
 			@Override
 			String processPresetLayoutConfigurerMethod(HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView,
-					LayoutConfig layoutConfig) throws Exception {
+				LayoutConfig layoutConfig) throws Exception {
 				called.add("processPresetLayoutConfigurerMethod");
 				return "";
 			}
 
-			/**
-			 * @see com.coupang.common.web.view.layout.aop.AbstractLayoutHandlerInterceptor#processControllerLayoutConfigurerMethod(javax.servlet.http.HttpServletRequest,
-			 *      javax.servlet.http.HttpServletResponse, java.lang.Object, org.springframework.web.servlet.ModelAndView,
-			 *      com.coupang.common.web.view.layout.bean.LayoutConfig)
-			 */
 			@Override
 			String processControllerLayoutConfigurerMethod(HttpServletRequest request, HttpServletResponse response, Object bean,
-					ModelAndView modelAndView, LayoutConfig layoutConfig) throws Exception {
+				ModelAndView modelAndView, LayoutConfig layoutConfig) throws Exception {
 				called.add("processControllerLayoutConfigurerMethod");
 				return "";
 			}
@@ -376,12 +353,30 @@ public class LayoutHandlerInterceptorTest {
 		}
 
 		/**
+		 * @see javax.servlet.ServletResponse#setBufferSize(int)
+		 */
+		@Override
+		public void setBufferSize(int arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+		/**
 		 * @see javax.servlet.ServletResponse#getCharacterEncoding()
 		 */
 		@Override
 		public String getCharacterEncoding() {
 			// TODO Auto-generated method stub
 			return null;
+		}
+
+		/**
+		 * @see javax.servlet.ServletResponse#setCharacterEncoding(java.lang.String)
+		 */
+		@Override
+		public void setCharacterEncoding(String arg0) {
+			// TODO Auto-generated method stub
+
 		}
 
 		/**
@@ -393,12 +388,30 @@ public class LayoutHandlerInterceptorTest {
 		}
 
 		/**
+		 * @see javax.servlet.ServletResponse#setContentType(java.lang.String)
+		 */
+		@Override
+		public void setContentType(String arg0) {
+			// TODO Auto-generated method stub
+
+		}
+
+		/**
 		 * @see javax.servlet.ServletResponse#getLocale()
 		 */
 		@Override
 		public Locale getLocale() {
 			// TODO Auto-generated method stub
 			return null;
+		}
+
+		/**
+		 * @see javax.servlet.ServletResponse#setLocale(java.util.Locale)
+		 */
+		@Override
+		public void setLocale(Locale arg0) {
+			// TODO Auto-generated method stub
+
 		}
 
 		/**
@@ -447,46 +460,10 @@ public class LayoutHandlerInterceptorTest {
 		}
 
 		/**
-		 * @see javax.servlet.ServletResponse#setBufferSize(int)
-		 */
-		@Override
-		public void setBufferSize(int arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
-		/**
-		 * @see javax.servlet.ServletResponse#setCharacterEncoding(java.lang.String)
-		 */
-		@Override
-		public void setCharacterEncoding(String arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
-		/**
 		 * @see javax.servlet.ServletResponse#setContentLength(int)
 		 */
 		@Override
 		public void setContentLength(int arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
-		/**
-		 * @see javax.servlet.ServletResponse#setContentType(java.lang.String)
-		 */
-		@Override
-		public void setContentType(String arg0) {
-			// TODO Auto-generated method stub
-
-		}
-
-		/**
-		 * @see javax.servlet.ServletResponse#setLocale(java.util.Locale)
-		 */
-		@Override
-		public void setLocale(Locale arg0) {
 			// TODO Auto-generated method stub
 
 		}
@@ -672,6 +649,15 @@ public class LayoutHandlerInterceptorTest {
 		public String getCharacterEncoding() {
 			// TODO Auto-generated method stub
 			return null;
+		}
+
+		/**
+		 * @see javax.servlet.ServletRequest#setCharacterEncoding(java.lang.String)
+		 */
+		@Override
+		public void setCharacterEncoding(String arg0) throws UnsupportedEncodingException {
+			// TODO Auto-generated method stub
+
 		}
 
 		/**
@@ -895,15 +881,6 @@ public class LayoutHandlerInterceptorTest {
 		 */
 		@Override
 		public void setAttribute(String arg0, Object arg1) {
-			// TODO Auto-generated method stub
-
-		}
-
-		/**
-		 * @see javax.servlet.ServletRequest#setCharacterEncoding(java.lang.String)
-		 */
-		@Override
-		public void setCharacterEncoding(String arg0) throws UnsupportedEncodingException {
 			// TODO Auto-generated method stub
 
 		}

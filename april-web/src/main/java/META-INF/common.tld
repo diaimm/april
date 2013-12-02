@@ -5,11 +5,11 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
     version="2.1">
     
-  <description>coupang common</description>
+  <description>april common</description>
   <display-name>common</display-name>
   <tlib-version>1.0</tlib-version>
-  <short-name>coupang</short-name>
-  <uri>http://www.coupang.com/taglib/common</uri>
+  <short-name>april</short-name>
+  <uri>http://com.github.diaimm/april/web/taglib/common</uri>
 
 	<tag>
 		<description>
@@ -155,29 +155,6 @@
 			</description>
 			<name>compress</name>
 			<required>false</required>
-			<rtexprvalue>true</rtexprvalue>
-		</attribute>
-	</tag>
-	
-	<tag>
-		<description>
-			Refer : com.coupang.member.component.web.util.URLHelpers
-			화면에서 사용하는 공통 변수를 제공하는 Tag Lib
-		</description>
-		<name>urlInfo</name>
-		<tag-class>com.diaimm.april.web.taglib.UrlInfoTag</tag-class>
-		<body-content>scriptless</body-content>
-		<attribute>
-			<description>
-				CURRENT_PATH
-				CURRENT_URL_BASE
-				CURRENT_URL
-				LOGIN_URL_BASE
-				FRONT_URL_BASE
-				CDN_URL_BASE
-			</description>
-			<name>key</name>
-			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>

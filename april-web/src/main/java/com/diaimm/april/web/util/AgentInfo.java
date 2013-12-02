@@ -22,9 +22,6 @@ public class AgentInfo {
 	private final Device device;
 	private final String agent;
 	private boolean isforceAppToWeb = false;
-	private boolean isApp = false;
-	private String appReturnUrl;
-	private String appUuid;
 
 	public AgentInfo(HttpServletRequest request) {
 		this.request = request;
@@ -72,20 +69,6 @@ public class AgentInfo {
 	}
 
 	/**
-	 * @return the isApp
-	 */
-	public boolean isApp() {
-		return isApp;
-	}
-
-	/**
-	 * @param isApp the isApp to set
-	 */
-	public void setApp(boolean isApp) {
-		this.isApp = isApp;
-	}
-
-	/**
 	 * @return the isforceAppToWeb
 	 */
 	public boolean isIsforceAppToWeb() {
@@ -98,33 +81,4 @@ public class AgentInfo {
 	public void setIsforceAppToWeb(boolean isforceAppToWeb) {
 		this.isforceAppToWeb = isforceAppToWeb;
 	}
-
-	/**
-	 * @return the appReturnUrl
-	 */
-	public String getAppReturnUrl() {
-		return appReturnUrl;
-	}
-
-	/**
-	 * @param appReturnUrl the appReturnUrl to set
-	 */
-	public void setAppReturnUrl(String appReturnUrl) {
-		this.appReturnUrl = appReturnUrl;
-	}
-
-	/**
-	 * @return the appUuid
-	 */
-	public String getAppUuid() {
-		return appUuid;
-	}
-
-	/**
-	 * @param appUuid the appUuid to set
-	 */
-	public void setAppUuid(String appUuid) {
-		this.appUuid = appUuid;
-	}
-
 }

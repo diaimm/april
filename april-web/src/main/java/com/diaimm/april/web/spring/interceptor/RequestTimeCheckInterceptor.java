@@ -6,13 +6,13 @@
  */
 package com.diaimm.april.web.spring.interceptor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author diaimm
@@ -48,13 +48,13 @@ public class RequestTimeCheckInterceptor implements HandlerInterceptor {
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
 		long currentTimeMillis = System.currentTimeMillis();
 
-		long startTime = (Long) getTimeSafe(request, TimeCheckAttributeKeys.PRE);
-		long controllTime = (Long) getTimeSafe(request, TimeCheckAttributeKeys.POST);
+		long startTime = (Long)getTimeSafe(request, TimeCheckAttributeKeys.PRE);
+		long controllTime = (Long)getTimeSafe(request, TimeCheckAttributeKeys.POST);
 		long afterRendering = currentTimeMillis;
 
 		StringBuffer log = new StringBuffer();
-		log.append("requestUri : " + request.getRequestURI() + ", Controller Time : " + (controllTime - startTime) + "(msecs) , Html Time : " + (afterRendering - controllTime)
-				+ " (msecs) , Total Time : " + (afterRendering - startTime) + " (msecs)");
+		log.append("requestUri : " + request.getRequestURI() + ", Controller Time : " + (controllTime - startTime) + "(msecs) , Html Time : "
+			+ (afterRendering - controllTime) + " (msecs) , Total Time : " + (afterRendering - startTime) + " (msecs)");
 
 		logger.debug(log.toString());
 	}

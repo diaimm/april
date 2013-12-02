@@ -6,25 +6,18 @@
  */
 package com.diaimm.april.web.taglib.bufferedresponse;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.StringWriter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.servlet.jsp.JspException;
-import javax.servlet.jsp.PageContext;
-import javax.servlet.jsp.tagext.SimpleTagSupport;
-
+import com.diaimm.april.web.util.JavascriptMinifier;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.diaimm.april.web.util.JavascriptMinifier;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
+import javax.servlet.jsp.tagext.SimpleTagSupport;
+import java.io.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 
@@ -68,7 +61,8 @@ public class JavascriptCodeCollectorTag extends SimpleTagSupport {
 		}
 
 		ReadBodyContent(String bodyContent) {
-			Pattern scriptAreaPattern = Pattern.compile("<(no)?(s|S)(c|C)(r|R)(i|I)(p|P)(t|T)[^>]*>.*?</(no)?(s|S)(c|C)(r|R)(i|I)(p|P)(t|T)>", Pattern.DOTALL);
+			Pattern scriptAreaPattern = Pattern.compile("<(no)?(s|S)(c|C)(r|R)(i|I)(p|P)(t|T)[^>]*>.*?</(no)?(s|S)(c|C)(r|R)(i|I)(p|P)(t|T)>",
+				Pattern.DOTALL);
 			Matcher matcher = scriptAreaPattern.matcher(bodyContent);
 
 			StringBuffer jsCode = new StringBuffer();
@@ -92,7 +86,7 @@ public class JavascriptCodeCollectorTag extends SimpleTagSupport {
 	 * @return
 	 */
 	private JavascriptCodeBuffer getJavascriptCodeBuffer() {
-		return new JavascriptCodeBuffer((PageContext) getJspContext());
+		return new JavascriptCodeBuffer((PageContext)getJspContext());
 	}
 
 	ReadBodyContent readBodyContent() throws IOException {

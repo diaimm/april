@@ -14,7 +14,8 @@ import java.util.Comparator;
  * @author diaimm
  */
 enum JavascriptCodeType {
-	BIGPIPE(0), JS_TO_BE_BUFFERED(1);
+	BIGPIPE(0),
+	JS_TO_BE_BUFFERED(1);
 
 	private final int order;
 

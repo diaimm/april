@@ -22,10 +22,8 @@ import java.io.PushbackInputStream;
  */
 public class JavascriptMinifier {
 	private static final int EOF = -1;
-
 	private PushbackInputStream inputStream;
 	private OutputStream outputStream;
-
 	private int theA;
 	private int theB;
 	private int line;

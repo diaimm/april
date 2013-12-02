@@ -98,6 +98,7 @@ public class MapperScannerInitializerTest {
 			Map<String, Object> dataSourceInfo = new HashMap<String, Object>();
 			templateAttributes.add(dataSourceInfo);
 			dataSourceInfo.put("id", "test");
+			dataSourceInfo.put("name", "test1");
 
 			try {
 				// 필수값이 없는 설정은 exception
@@ -151,9 +152,7 @@ public class MapperScannerInitializerTest {
 		target.setApplicationContext(applicationContext);
 		DataSourceIntializePropertiesUtils.initializeByTemplate(MapperScannerInitializer.class, null, null, null);
 
-		Assert.assertEquals(2, isCalled.size());
-		Assert.assertTrue(isCalled.contains("getDataSourceBeanConfiguration"));
-		Assert.assertTrue(isCalled.contains("feedToBeanFactory"));
+		Assert.assertEquals(0, isCalled.size());
 	}
 
 	@SuppressWarnings("unchecked")

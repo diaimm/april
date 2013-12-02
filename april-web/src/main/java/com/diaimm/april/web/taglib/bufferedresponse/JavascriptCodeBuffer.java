@@ -6,12 +6,11 @@
  */
 package com.diaimm.april.web.taglib.bufferedresponse;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.apache.commons.lang.StringUtils;
 
 import javax.servlet.jsp.PageContext;
-
-import org.apache.commons.lang.StringUtils;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 
@@ -33,7 +32,7 @@ final class JavascriptCodeBuffer {
 	 * 값이 없더라도 null이 리턴되지는 않습니다. 비어있는 StringBuffer가 리턴됩니다.
 	 * </pre>
 	 * 
-	 * @param pageContext
+	 * @param ret
 	 * @return
 	 */
 	void flushTo(StringBuffer ret) {
@@ -59,7 +58,7 @@ final class JavascriptCodeBuffer {
 	}
 
 	StringBuffer get(JavascriptCodeType codeType) {
-		StringBuffer ret = (StringBuffer) pageContext.getAttribute(codeType.getContextKey(), PageContext.REQUEST_SCOPE);
+		StringBuffer ret = (StringBuffer)pageContext.getAttribute(codeType.getContextKey(), PageContext.REQUEST_SCOPE);
 		if (ret == null) {
 			ret = new StringBuffer();
 			set(codeType, ret);
@@ -74,8 +73,6 @@ final class JavascriptCodeBuffer {
 
 	/**
 	 * 버퍼 내용 유무에 상관없이 버퍼를 새로 생성합니다.
-	 * 
-	 * @param pageContext
 	 */
 	void clear() {
 		for (JavascriptCodeType codeType : JavascriptCodeType.sortedValues()) {

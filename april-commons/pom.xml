@@ -70,12 +70,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.mobile</groupId>
 			<artifactId>spring-mobile-device</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
@@ -166,7 +166,7 @@
 			<artifactId>commons-dbcp</artifactId>
 			<version>1.4</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -223,11 +223,11 @@
 			<artifactId>IPIN2Client</artifactId>
 			<version>2.0.0</version>
 		</dependency>
-		
+
 		<!-- KMC -->
-		<dependency>    
-			<groupId>com.kmcert</groupId>    
-			<artifactId>ICERTSecu-jdk15</artifactId>    
+		<dependency>
+			<groupId>com.kmcert</groupId>
+			<artifactId>ICERTSecu-jdk15</artifactId>
 			<version>201302081147</version>
 		</dependency>
 
@@ -250,7 +250,7 @@
 			<version>2.1</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
