@@ -225,6 +225,7 @@ public class LayoutHandlerInterceptorTest {
 			Assert.assertFalse(called.contains("invokeLayoutConfigurerMethod"));
 			Assert.assertFalse(called.contains("handoverLayoutAndViewInfo"));
 		} catch (Exception e) {
+			e.printStackTrace();
 			Assert.fail();
 		}
 
