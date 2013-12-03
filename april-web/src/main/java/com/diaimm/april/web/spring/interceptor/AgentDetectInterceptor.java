@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.Override;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +66,7 @@ public class AgentDetectInterceptor implements HandlerInterceptor, InitializingB
 	 * @param beanDefinitionRegistry
 	 */
 	private void initAgentInfoHolderBean(BeanDefinitionRegistry beanDefinitionRegistry) {
-		BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(AgentInfoHolder.class);
+		BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(DefaultAgentInfoHolder.class);
 		beanDefinitionBuilder.setScope("request");
 		beanDefinitionRegistry.registerBeanDefinition("agentInfoHolder", beanDefinitionBuilder.getBeanDefinition());
 	}
@@ -92,10 +93,20 @@ public class AgentDetectInterceptor implements HandlerInterceptor, InitializingB
 		this.forcedPCViewCookieName = forcedPCViewCookieName;
 	}
 
-	public class AgentInfoHolder {
+	public static interface AgentInfoHolder {
+		public void init(HttpServletRequest request, HttpServletResponse response);
+
+		public AgentInfo get();
+	}
+
+	private class DefaultAgentInfoHolder {
 		private AgentInfo agentInfo;
 
-		private void init(HttpServletRequest request, HttpServletResponse response) {
+		AgentInfoHolder() {
+		}
+
+		@Override
+		public void init(HttpServletRequest request, HttpServletResponse response) {
 			this.agentInfo = new AgentInfo(request);
 
 			// 모바일인 경우 AentInfo 에 필요한 정보를 넣어준다.
@@ -110,6 +121,7 @@ public class AgentDetectInterceptor implements HandlerInterceptor, InitializingB
 		/**
 		 * @return the agentInfo
 		 */
+		@Override
 		public AgentInfo get() {
 			return agentInfo;
 		}
