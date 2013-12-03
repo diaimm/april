@@ -99,10 +99,10 @@ public class AgentDetectInterceptor implements HandlerInterceptor, InitializingB
 		public AgentInfo get();
 	}
 
-	private class DefaultAgentInfoHolder {
+	private class DefaultAgentInfoHolder implements AgentInfoHolder {
 		private AgentInfo agentInfo;
 
-		AgentInfoHolder() {
+		DefaultAgentInfoHolder() {
 		}
 
 		@Override
