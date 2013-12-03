@@ -65,8 +65,9 @@ public class AgentDetectInterceptor implements HandlerInterceptor, InitializingB
 	/**
 	 * @param beanDefinitionRegistry
 	 */
-	private void initAgentInfoHolderBean(BeanDefinitionRegistry beanDefinitionRegistry) {
+	void initAgentInfoHolderBean(BeanDefinitionRegistry beanDefinitionRegistry) {
 		BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(DefaultAgentInfoHolder.class);
+		beanDefinitionBuilder.addConstructorArgValue(this);
 		beanDefinitionBuilder.setScope("request");
 		beanDefinitionRegistry.registerBeanDefinition("agentInfoHolder", beanDefinitionBuilder.getBeanDefinition());
 	}
@@ -74,7 +75,7 @@ public class AgentDetectInterceptor implements HandlerInterceptor, InitializingB
 	/**
 	 * @param beanDefinitionRegistry
 	 */
-	private void initArgumentResolver(BeanDefinitionRegistry beanDefinitionRegistry) {
+	void initArgumentResolver(BeanDefinitionRegistry beanDefinitionRegistry) {
 		BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(AgentArgumentResolver.class);
 		beanDefinitionRegistry.registerBeanDefinition("agentArgumentResolver", beanDefinitionBuilder.getBeanDefinition());
 
@@ -101,9 +102,6 @@ public class AgentDetectInterceptor implements HandlerInterceptor, InitializingB
 
 	private class DefaultAgentInfoHolder implements AgentInfoHolder {
 		private AgentInfo agentInfo;
-
-		DefaultAgentInfoHolder() {
-		}
 
 		@Override
 		public void init(HttpServletRequest request, HttpServletResponse response) {
