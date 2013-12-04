@@ -8,7 +8,7 @@
 
     	http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd">
 
-	<bean id="${dataSources[0].PERSISTENCE_UNIT_MANAGER.postFix}"diaimm.april.db.jpa.hibernate.multidbsupport.DefaultPersistenceUnitManager">
+	<bean id="${dataSources[0].PERSISTENCE_UNIT_MANAGER.postFix}" class="com.diaimm.april.db.jpa.hibernate.multidbsupport.DefaultPersistenceUnitManager">
 		<property name="persistenceXmlLocations">
 			<list>
 				<#list dataSources as dataSource>
@@ -53,7 +53,7 @@
 			<#if dataSource.useCallableStatementCache??><property name="useCallableStatementCache" value="${dataSource.useCallableStatementCache}"/></#if>
 		</bean>
 
-		<bean id="${dataSource.id}${dataSource.ENTITY_MANAGER_FACTORY.postFix}" class="com.diaimm.aprilupang.member.db.jpa.hibernate.routing.RoutingLocalContainerEntityManagerFactoryBean">
+		<bean id="${dataSource.id}${dataSource.ENTITY_MANAGER_FACTORY.postFix}" class="com.diaimm.april.db.jpa.hibernate.routing.RoutingLocalContainerEntityManagerFactoryBean">
 			<property name="jpaVendorAdapter">
 				<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" p:showSql="${dataSource.showSql?default('true')}" p:generateDdl="${dataSource.generateDDL?default('true')}"/>
 			</property>

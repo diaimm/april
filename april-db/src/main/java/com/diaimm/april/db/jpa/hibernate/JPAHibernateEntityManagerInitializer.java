@@ -40,7 +40,7 @@ public class JPAHibernateEntityManagerInitializer implements ApplicationContextA
 	private Logger logger = LoggerFactory.getLogger(JPAHibernateEntityManagerInitializer.class);
 	private List<String> properties;
 	private ApplicationContext applicationContext;
-	private boolean useRoutingTransactionManager = true;
+	private boolean useRoutingTransactionManager = false;
 
 	/**
 	 * property file pathes
