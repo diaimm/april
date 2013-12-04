@@ -6,8 +6,6 @@
  */
 package com.diaimm.april.web.view.selector;
 
-import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -15,5 +13,5 @@ import javax.servlet.http.HttpServletRequest;
  * 
  */
 public interface ViewNameSelector {
-	public String getViewName(HttpServletRequest request, ModelAndView modelAndView);
+	public String getViewName(HttpServletRequest request, String viewName);
 }

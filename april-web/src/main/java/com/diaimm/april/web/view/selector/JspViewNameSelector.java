@@ -6,8 +6,6 @@
  */
 package com.diaimm.april.web.view.selector;
 
-import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -20,11 +18,10 @@ public class JspViewNameSelector implements ViewNameSelector {
 	private String postFix = DEFAULT_POSTFIX;
 
 	/**
-	 * @see ViewNameSelector#getViewName(javax.servlet.http.HttpServletRequest,
-	 *      org.springframework.web.servlet.ModelAndView)
+	 * @see ViewNameSelector#getViewName(javax.servlet.http.HttpServletRequest, java.lang.String)
 	 */
 	@Override
-	public String getViewName(HttpServletRequest request, ModelAndView modelAndView) {
-		return PREFIX + modelAndView.getViewName() + postFix;
+	public String getViewName(HttpServletRequest request, String viewName) {
+		return PREFIX + viewName + postFix;
 	}
 }

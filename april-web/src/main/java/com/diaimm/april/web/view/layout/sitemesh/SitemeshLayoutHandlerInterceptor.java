@@ -6,16 +6,11 @@
  */
 package com.diaimm.april.web.view.layout.sitemesh;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.diaimm.april.web.view.layout.aop.AbstractLayoutHandlerInterceptor;
 import com.diaimm.april.web.view.layout.bean.LayoutConfig;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.diaimm.april.web.view.layout.aop.AbstractLayoutHandlerInterceptor;
-import com.diaimm.april.web.view.layout.bean.LayoutConfig;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -29,13 +24,9 @@ public class SitemeshLayoutHandlerInterceptor extends AbstractLayoutHandlerInter
 	 */
 	@Override
 	public void setContentsBodyView(HttpServletRequest request, ModelAndView modelAndView, LayoutConfig layoutConfig) {
-		modelAndView.setViewName(getViewNameSelector().getViewName(request, modelAndView));
+		modelAndView.setViewName(getViewNameSelector().getViewName(request, modelAndView.getViewName()));
 	}
 
-	/**
-	 * @see com.diaimm.april.web.view.layout.aop.AbstractLayoutHandlerInterceptor#handoverLayoutName(org.springframework.web.servlet.ModelAndView,
-	 *      java.lang.String, java.lang.String, java.lang.String)
-	 */
 	@Override
 	public void handoverLayoutConfigName(HttpServletRequest request, ModelAndView modelAndView, String layoutName) {
 		request.setAttribute(DECORATOR_NAME_ATTRIBUTE_KEY, layoutName);

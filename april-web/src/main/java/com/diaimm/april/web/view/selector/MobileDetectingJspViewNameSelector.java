@@ -12,7 +12,6 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -36,12 +35,10 @@ public class MobileDetectingJspViewNameSelector implements ViewNameSelector, App
 	}
 
 	/**
-	 * @see ViewNameSelector#getViewName(javax.servlet.http.HttpServletRequest,
-	 *      org.springframework.web.servlet.ModelAndView)
+	 * @see ViewNameSelector#getViewName(javax.servlet.http.HttpServletRequest, java.lang.String)
 	 */
 	@Override
-	public String getViewName(HttpServletRequest request, ModelAndView modelAndView) {
-		String viewName = modelAndView.getViewName();
+	public String getViewName(HttpServletRequest request, String viewName) {
 		if (StringUtils.isNotBlank(viewName) && viewName.startsWith("/")) {
 			viewName = viewName.substring(1);
 		}
@@ -49,8 +46,7 @@ public class MobileDetectingJspViewNameSelector implements ViewNameSelector, App
 		String webViewPath = getWebPrefix() + viewName + getPostFix();
 		String mobileViewPath = getMobilePrefix() + viewName + getPostFix();
 
-		AgentInfoHolder agentInfoHolder = applicationContext.getBean(AgentInfoHolder.class);
-		AgentInfo agentInfo = agentInfoHolder.get();
+		AgentInfo agentInfo = getAgentInfo();
 		if (agentInfo.isMobileView()) {
 			if (isMobileViewFileExists(request, mobileViewPath)) {
 				return mobileViewPath;
@@ -59,7 +55,12 @@ public class MobileDetectingJspViewNameSelector implements ViewNameSelector, App
 		return webViewPath;
 	}
 
-	private boolean isMobileViewFileExists(HttpServletRequest request, String mobileViewPath) {
+	AgentInfo getAgentInfo() {
+		AgentInfoHolder agentInfoHolder = applicationContext.getBean(AgentInfoHolder.class);
+		return agentInfoHolder.get();
+	}
+
+	boolean isMobileViewFileExists(HttpServletRequest request, String mobileViewPath) {
 		if (!getMobileViewFileExistsCache().containsKey(mobileViewPath)) {
 			synchronized (getMobileViewFileExistsCache()) {
 				if (!getMobileViewFileExistsCache().containsKey(mobileViewPath)) {

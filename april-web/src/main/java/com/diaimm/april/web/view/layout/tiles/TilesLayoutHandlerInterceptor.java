@@ -6,12 +6,11 @@
  */
 package com.diaimm.april.web.view.layout.tiles;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.web.servlet.ModelAndView;
-
 import com.diaimm.april.web.view.layout.aop.AbstractLayoutHandlerInterceptor;
 import com.diaimm.april.web.view.layout.bean.LayoutConfig;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author diaimm
@@ -29,6 +28,6 @@ public class TilesLayoutHandlerInterceptor extends AbstractLayoutHandlerIntercep
 	 */
 	@Override
 	public void setContentsBodyView(HttpServletRequest request, ModelAndView modelAndView, LayoutConfig layoutConfig) {
-		request.setAttribute(LayoutConfig.LAYOUT_CONTENTS_KEY, getViewNameSelector().getViewName(request, modelAndView));
+		request.setAttribute(LayoutConfig.LAYOUT_CONTENTS_KEY, getViewNameSelector().getViewName(request, modelAndView.getViewName()));
 	}
 }

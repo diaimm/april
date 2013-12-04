@@ -149,7 +149,7 @@ public abstract class AbstractLayoutHandlerInterceptor implements HandlerInterce
 		if (layoutHolder.layout() == null || layoutHolder.method() == null || isAvoidLayoutUsePrefix(modelAndView)
 			|| !(handler instanceof HandlerMethod)) {
 			if (!isAvoidLayoutUsePrefix(modelAndView)) {
-				modelAndView.setViewName(getViewNameSelector().getViewName(request, modelAndView));
+				modelAndView.setViewName(getViewNameSelector().getViewName(request, modelAndView.getViewName()));
 			}
 			return;
 		}
