@@ -46,13 +46,14 @@ public class MobileDetectingJspViewNameSelector implements ViewNameSelector, App
 		String webViewPath = getWebPrefix() + viewName + getPostFix();
 		String mobileViewPath = getMobilePrefix() + viewName + getPostFix();
 
-		AgentInfo agentInfo = getAgentInfo();
-		if (agentInfo.isMobileView()) {
-			if (isMobileViewFileExists(request, mobileViewPath)) {
-				return mobileViewPath;
-			}
+		if (isMobileView(request, mobileViewPath)) {
+			return mobileViewPath;
 		}
 		return webViewPath;
+	}
+
+	public boolean isMobileView(HttpServletRequest request, String mobileViewPath) {
+		return getAgentInfo().isMobileView() && isMobileViewFileExists(request, mobileViewPath);
 	}
 
 	AgentInfo getAgentInfo() {

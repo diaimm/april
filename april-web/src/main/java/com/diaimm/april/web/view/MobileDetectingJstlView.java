@@ -14,6 +14,7 @@ import java.util.Map;
  */
 public class MobileDetectingJstlView extends JstlView {
 	private final MobileDetectingJspViewNameSelector mobileDetectingJspViewNameSelector;
+	private String viewName = null;
 
 	public MobileDetectingJstlView(MobileDetectingJspViewNameSelector mobileDetectingJspViewNameSelector) {
 		this.mobileDetectingJspViewNameSelector = mobileDetectingJspViewNameSelector;
@@ -21,7 +22,12 @@ public class MobileDetectingJstlView extends JstlView {
 
 	@Override
 	public void render(Map<String, ?> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		this.setUrl(mobileDetectingJspViewNameSelector.getViewName(request, this.getUrl()));
+		super.setUrl(mobileDetectingJspViewNameSelector.getViewName(request, viewName));
 		super.render(model, request, response);
+	}
+
+	@Override
+	public void setUrl(String url) {
+		this.viewName = url;
 	}
 }
