@@ -29,6 +29,8 @@ public class MobileDetectingJstlView extends JstlView {
 	@Override
 	public void setUrl(String url) {
 		super.setUrl(url);
-		this.viewName = url;
+		if(this.viewName == null){
+			this.viewName = url;
+		}
 	}
 }
