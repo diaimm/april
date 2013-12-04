@@ -1,21 +1,16 @@
 package com.diaimm.april.db.jpa.hibernate;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-
+import com.diaimm.april.commons.util.EnumUtils;
+import com.diaimm.april.commons.util.FreeMarkerTemplateBuilder;
+import com.diaimm.april.commons.util.JaxbObjectMapper;
+import com.diaimm.april.db.jpa.hibernate.routing.RoutingTransactionManager;
+import com.diaimm.april.db.routing.AbstractRoutingTransactionManager;
+import com.diaimm.april.db.routing.RoutingDataSource;
+import com.diaimm.april.db.util.BeansExceptionExtension;
 import com.diaimm.april.db.util.DataSourceInitializerPropertyKey;
 import com.diaimm.april.db.util.DataSourceIntializePropertiesUtils;
 import com.diaimm.april.db.util.DataSourcePropertyKeys;
+import com.google.common.collect.Maps;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -29,10 +24,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.CollectionUtils;
 
-import com.diaimm.april.commons.util.EnumUtils;
-import com.diaimm.april.commons.util.JaxbObjectMapper;
-import com.diaimm.april.db.util.BeansExceptionExtension;
-import com.google.common.collect.Maps;
+import javax.xml.bind.annotation.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 /**
  * Created with diaimm(봉구).
@@ -45,6 +40,7 @@ public class JPAHibernateEntityManagerInitializer implements ApplicationContextA
 	private Logger logger = LoggerFactory.getLogger(JPAHibernateEntityManagerInitializer.class);
 	private List<String> properties;
 	private ApplicationContext applicationContext;
+	private boolean useRoutingTransactionManager = true;
 
 	/**
 	 * property file pathes
@@ -64,15 +60,48 @@ public class JPAHibernateEntityManagerInitializer implements ApplicationContextA
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 		try {
 			List<Map<String, Object>> allDataSourcePropertyFiles = getAllDataSourcePropertyFiles();
-			DataSourceIntializePropertiesUtils.initializeByTemplate(this.getClass(), allDataSourcePropertyFiles, beanFactory, LOCAL_CONTAINER_ENTITY_MANAGER_CONFIG_TEMPLATE_FTL);
+			DataSourceIntializePropertiesUtils.initializeByTemplate(this.getClass(), allDataSourcePropertyFiles, beanFactory,
+				LOCAL_CONTAINER_ENTITY_MANAGER_CONFIG_TEMPLATE_FTL);
+
+			if (useRoutingTransactionManager) {
+				initializeRoutingTransactionManager(allDataSourcePropertyFiles, beanFactory);
+			}
 		} catch (IOException e) {
 			throw new BeansExceptionExtension(e.getMessage(), e);
 		}
 	}
 
 	/**
+	 * @param templateAttributes
+	 */
+	void initializeRoutingTransactionManager(List<Map<String, Object>> templateAttributes, ConfigurableListableBeanFactory beanFactory) {
+		try {
+			FreeMarkerTemplateBuilder.AttributeBuilder attributeBuilder = DataSourceIntializePropertiesUtils.getDataSourceBeanConfiguration(
+				AbstractRoutingTransactionManager.class, templateAttributes,
+				AbstractRoutingTransactionManager.ROUTING_TRANSACTION_MANAGER_INITIALIZE_TEMPLATE_FTL);
+			attributeBuilder.set("routing", getRoutingTransactionManagerAttributes());
+			String configuration = attributeBuilder.build();
+			logger.debug(configuration);
+			DataSourceIntializePropertiesUtils.feedToBeanFactory(beanFactory, configuration);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+	}
+
+	/**
 	 * @return
-	 * @throws IOException
+	 */
+	private Map<String, Object> getRoutingTransactionManagerAttributes() {
+		Map<String, Object> ret = new HashMap<String, Object>();
+		ret.put("datasourceId", "routingDataSource_auto");
+		ret.put("datasourceClass", RoutingDataSource.class.getName());
+		ret.put("txClass", RoutingTransactionManager.class.getName());
+		return ret;
+	}
+
+	/**
+	 * @return
+	 * @throws java.io.IOException
 	 */
 	List<Map<String, Object>> getAllDataSourcePropertyFiles() throws IOException {
 		List<Map<String, Object>> dataSourcePropertyFiles = new ArrayList<Map<String, Object>>();
@@ -97,7 +126,7 @@ public class JPAHibernateEntityManagerInitializer implements ApplicationContextA
 		/**
 		 * untiname을 생성한다.
 		 */
-		String persistenceFilePath = (String) properties.get(JAPHibernatePropertyKeys.UNIT_MANAGER_PERSISTENCE_FILE.propertyKey);
+		String persistenceFilePath = (String)properties.get(JAPHibernatePropertyKeys.UNIT_MANAGER_PERSISTENCE_FILE.propertyKey);
 		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(persistenceFilePath);
 		String source = IOUtils.toString(inputStream, "UTF-8");
 		Persistence persistence = JaxbObjectMapper.XML.objectify(source, Persistence.class);
@@ -107,11 +136,16 @@ public class JPAHibernateEntityManagerInitializer implements ApplicationContextA
 		}
 	}
 
+	public void setUseRoutingTransactionManager(boolean useRoutingTransactionManager) {
+		this.useRoutingTransactionManager = useRoutingTransactionManager;
+	}
+
 	public static enum BeanNamePostfixes {
 		PERSISTENCE_UNIT_MANAGER("persistenceUnitManager"),
-		ENTITY_MANAGER_FACTORY("EntityManagerFactory"),
+		ENTITY_MANAGER_FACTORY("EntityManager"),
 		DATASOURCE("DataSource"),
-		TRANSACTION_MANAGER("TransactionManager");
+		TRANSACTION_MANAGER("TransactionManager"),
+		REPOSITORY_SCANNER("RepositoryScanner");
 		private final String postFix;
 
 		BeanNamePostfixes(String postFix) {
@@ -137,6 +171,8 @@ public class JPAHibernateEntityManagerInitializer implements ApplicationContextA
 	static enum JAPHibernatePropertyKeys implements DataSourceInitializerPropertyKey {
 		//
 		UNIT_MANAGER_PERSISTENCE_FILE("unit_manager.persistenceFile", "persistenceFile", true),
+		// scan base package
+		BASE_PACKAGE("unit_manager.basePackage", "basePackage", true),
 		//
 		ENTITY_MANAGER_UNIT_NAME("entity_manager.unitName", "unitName", true),
 		//

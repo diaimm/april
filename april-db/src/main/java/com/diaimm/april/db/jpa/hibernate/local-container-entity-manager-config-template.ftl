@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
-	   xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
-    	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-    	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
-    	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd"
-	   xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
-	   xmlns:util="http://www.springframework.org/schema/util">
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 
-	<!-- initialzing DefaultPersistenceUnitManager... -->
-	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor">
-		<property name="defaultPersistenceUnitName" value="${dataSources[0].id}"/>
-	</bean>
 
-	<bean id="${dataSources[0].PERSISTENCE_UNIT_MANAGER.postFix}" class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager">
+    	http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd">
+
+	<bean id="${dataSources[0].PERSISTENCE_UNIT_MANAGER.postFix}"diaimm.april.db.jpa.hibernate.multidbsupport.DefaultPersistenceUnitManager">
 		<property name="persistenceXmlLocations">
 			<list>
 				<#list dataSources as dataSource>
@@ -22,12 +17,10 @@
 			</list>
 		</property>
 
-		<property name="packagesToScan" value="com.coupang.wakeup.domain.model" />
-		<property name="defaultDataSource" ref="${dataSources[0].id}${dataSources[0].DATASOURCE.postFix}"/>
 		<property name="dataSources">
 			<map>
 				<#list dataSources as dataSource>
-					<entry key="${dataSource.id}${dataSource.DATASOURCE.postFix}" value-ref="${dataSource.id}${dataSource.DATASOURCE.postFix}"/>
+					<entry key="${dataSource.unitName}" value-ref="${dataSource.id}${dataSource.DATASOURCE.postFix}"/>
 				</#list>
 			</map>
 		</property>
@@ -60,17 +53,28 @@
 			<#if dataSource.useCallableStatementCache??><property name="useCallableStatementCache" value="${dataSource.useCallableStatementCache}"/></#if>
 		</bean>
 
-		<bean id="${dataSource.id}${dataSource.ENTITY_MANAGER_FACTORY.postFix}" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<bean id="${dataSource.id}${dataSource.ENTITY_MANAGER_FACTORY.postFix}" class="com.diaimm.aprilupang.member.db.jpa.hibernate.routing.RoutingLocalContainerEntityManagerFactoryBean">
 			<property name="jpaVendorAdapter">
 				<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" p:showSql="${dataSource.showSql?default('true')}" p:generateDdl="${dataSource.generateDDL?default('true')}"/>
 			</property>
 			<property name="persistenceUnitManager" ref="${dataSource.PERSISTENCE_UNIT_MANAGER.postFix}"/>
 			<property name="persistenceUnitName" value="${dataSource.unitName}"/>
+			<property name="dataSourceId" value="${dataSource.id}${dataSource.DATASOURCE.postFix}"/>
+		</bean>
+
+		<bean id="${dataSource.id}${dataSource.TRANSACTION_MANAGER.postFix}" class="org.springframework.orm.jpa.JpaTransactionManager">
+			<property name="entityManagerFactory" ref="${dataSource.id}${dataSource.ENTITY_MANAGER_FACTORY.postFix}" />
 			<property name="dataSource" ref="${dataSource.id}${dataSource.DATASOURCE.postFix}"/>
 		</bean>
 
-		<bean id="${dataSource.id}${dataSource.TRANSACTION_MANAGER}" class="org.springframework.orm.jpa.JpaTransactionManager">
-			<property name="entityManagerFactory" ref="${dataSource.id}${dataSource.ENTITY_MANAGER_FACTORY.postFix}" />
+	<!--
+		<bean id="${dataSource.id}${dataSource.TRANSACTION_MANAGER.postFix}" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+			<property name="dataSource" ref="${dataSource.id}${dataSource.DATASOURCE.postFix}"/>
 		</bean>
+	-->
+
+		<jpa:repositories base-package="${dataSource.basePackage}" entity-manager-factory-ref="${dataSource.id}${dataSource.ENTITY_MANAGER_FACTORY.postFix}" transaction-manager-ref="${dataSource.id}${dataSource.TRANSACTION_MANAGER.postFix}">
+			<include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+		</jpa:repositories>
 	</#list>
 </beans>

@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<script type="text/javascript">
-			alert("요청하신 내용은 현재 일시적으로 사용이 중지되었습니다.");
+			alert("서비스 임시점검으로 회원가입, 회원정보 확인/수정, 본인 인증 기능의 사용이 일시적으로 제한됩니다. 10분 후에 다시 이용해 주세요.");
 			window.history.back();
 		</script>
 	</body>

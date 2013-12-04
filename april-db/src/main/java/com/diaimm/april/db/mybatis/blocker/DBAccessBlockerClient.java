@@ -2,7 +2,7 @@
  * @fileName : DBAccessBlockerClient.java
  * @date : 2013. 6. 5.
  * @author : diaimm.
- * @desc : 
+ * @desc :
  */
 package com.diaimm.april.db.mybatis.blocker;
 

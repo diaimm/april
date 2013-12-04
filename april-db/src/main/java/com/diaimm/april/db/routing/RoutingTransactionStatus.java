@@ -1,29 +1,28 @@
-package com.diaimm.april.db.mybatis.datasource;
+package com.diaimm.april.db.routing;
 
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionStatus;
 
 /**
- * {@link RoutingDataSource}를 위한 {@link TransactionStatus}
- * 
+ * {@link RoutingDataSource}를 위한 {@link org.springframework.transaction.TransactionStatus}
+ *
  * @author diaimm
  * @version $Rev$, $Date$
  */
 public class RoutingTransactionStatus implements TransactionStatus {
-	private boolean newTransaction;
-	private boolean rollbackOnly;
 	// key 관리와 순서 보장을 위해 TreeMap을 사용합니다.
 	private final Map<String, TransactionStatus> transactionStatuses = new TreeMap<String, TransactionStatus>();
 	private final Logger log = LoggerFactory.getLogger(RoutingTransactionStatus.class);
+	private boolean newTransaction;
+	private boolean rollbackOnly;
 
 	/**
 	 * {@inheritDoc}
@@ -56,8 +55,8 @@ public class RoutingTransactionStatus implements TransactionStatus {
 	}
 
 	/**
-	 * 하나의 {@link DataSource}에 대한 rollback 처리
-	 * 
+	 * 하나의 {@link javax.sql.DataSource}에 대한 rollback 처리
+	 *
 	 * @return rollback 여부
 	 */
 	public boolean isLocalRollbackOnly() {
@@ -65,8 +64,8 @@ public class RoutingTransactionStatus implements TransactionStatus {
 	}
 
 	/**
-	 * 여러 개의 하나의 {@link DataSource}에 대한 rollback 처리
-	 * 
+	 * 여러 개의 하나의 {@link javax.sql.DataSource}에 대한 rollback 처리
+	 *
 	 * @return rollback 여부
 	 */
 	public boolean isGlobalRollbackOnly() {
@@ -80,13 +79,16 @@ public class RoutingTransactionStatus implements TransactionStatus {
 	}
 
 	/**
-	 * {@link TransactionStatus}를 추가한다
-	 * 
+	 * {@link org.springframework.transaction.TransactionStatus}를 추가한다
+	 *
 	 * @param transactionStatus
-	 *            {@link TransactionStatus}
+	 *            {@link org.springframework.transaction.TransactionStatus}
 	 */
 	public void addSubTransactionStatus(String key, TransactionStatus transactionStatus) {
-		transactionStatuses.put(key, transactionStatus);
+		DefaultTransactionStatus defaultTransactionStatus = (DefaultTransactionStatus)transactionStatus;
+		//		JdbcTransactionObjectSupport transactionObjectSupport = (JdbcTransactionObjectSupport)defaultTransactionStatus.getTransaction();
+		//		transactionObjectSupport.getConnectionHolder().setSynchronizedWithTransaction(false);
+		transactionStatuses.put(key, defaultTransactionStatus);
 	}
 
 	public Iterator<TransactionStatus> getSubTransactionStatus() {
@@ -94,11 +96,11 @@ public class RoutingTransactionStatus implements TransactionStatus {
 	}
 
 	/**
-	 * {@link TransactionStatus} 정보를 리턴한다
-	 * 
-	 * @param index
+	 * {@link org.springframework.transaction.TransactionStatus} 정보를 리턴한다
+	 *
+	 * @param key
 	 *            인덱스
-	 * @return {@link TransactionStatus}
+	 * @return {@link org.springframework.transaction.TransactionStatus}
 	 */
 	public TransactionStatus getTransactionStatus(String key) {
 		return transactionStatuses.get(key);

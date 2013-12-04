@@ -20,7 +20,7 @@ import java.io.*;
 
 /**
  * jaxb library를 통한 xml(json) &lt;--&gt; java bean 간의 변환용 util
- * 
+ *
  * @author diaimm
  */
 public enum JaxbObjectMapper {
@@ -103,7 +103,7 @@ public enum JaxbObjectMapper {
 
 	/**
 	 * 전달된 객체(data)를 type으로 지정된 형으로 인지하고, String(xml/json)화 합니다.
-	 * 
+	 *
 	 * @param data
 	 *            data가 담긴 instance
 	 * @param type
@@ -114,7 +114,7 @@ public enum JaxbObjectMapper {
 
 	/**
 	 * 지정된 source(String)을 type 형태의 instance로 unmarshall합니다.
-	 * 
+	 *
 	 * @param source
 	 * @param type
 	 * @return
@@ -123,7 +123,7 @@ public enum JaxbObjectMapper {
 
 	/**
 	 * 지정된 source(String)을 type 형태의 instance로 unmarshall합니다.
-	 * 
+	 *
 	 * @param source
 	 * @param type
 	 * @return

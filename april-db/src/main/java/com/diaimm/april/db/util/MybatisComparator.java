@@ -13,9 +13,9 @@ public class MybatisComparator {
 		if (obj instanceof String) {
 			return StringUtils.isBlank((String) obj);
 		} else if (obj instanceof List) {
-			return CollectionUtils.isEmpty((List)obj);
+			return CollectionUtils.isEmpty((List) obj);
 		} else if (obj instanceof Map) {
-			return CollectionUtils.isEmpty((Map)obj);
+			return CollectionUtils.isEmpty((Map) obj);
 		} else if (obj instanceof Object[]) {
 			return obj == null || Array.getLength(obj)==0;
 		} else {

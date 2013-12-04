@@ -1,4 +1,4 @@
-package com.diaimm.april.db.mybatis.datasource;
+package com.diaimm.april.db.routing;
 
 /**
  * {@link RoutingDataSource}를 위한 Context Holder
@@ -6,7 +6,7 @@ package com.diaimm.april.db.mybatis.datasource;
  * @author diaimm
  * @version $Rev$, $Date$
  */
-final class RoutingDataSourceCurrentDatasourceHolder {
+public final class RoutingDataSourceCurrentDatasourceHolder {
 	private static final ThreadLocal<Object> HOLDER = new ThreadLocal<Object>();
 
 	private RoutingDataSourceCurrentDatasourceHolder() {

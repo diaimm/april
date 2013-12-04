@@ -1,10 +1,10 @@
 package com.diaimm.april.db.util;
 
-import org.springframework.context.ApplicationContext;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Properties;
+
+import org.springframework.context.ApplicationContext;
 
 /**
  * Created with diaimm(봉구).

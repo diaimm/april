@@ -1,13 +1,12 @@
 /*
  * @fileName : MapperScannerConfigurer.java
  * @date : 2013. 6. 3.
- * @author : diaimm.
+ * @author : diaimm
  * @desc : 
  */
 package com.diaimm.april.db.mybatis.framework;
 
 import org.mybatis.spring.mapper.ClassPathMapperScanner;
-import org.mybatis.spring.mapper.MapperFactoryBean;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;
@@ -78,7 +77,7 @@ public class DatasourceMapperScannerConfigurer implements BeanDefinitionRegistry
 	 * Same as {@code MapperFactoryBean#setAddToConfig(boolean)}.
 	 * 
 	 * @param addToConfig
-	 * @see MapperFactoryBean#setAddToConfig(boolean)
+	 * @see org.mybatis.spring.mapper.MapperFactoryBean#setAddToConfig(boolean)
 	 */
 	public void setAddToConfig(boolean addToConfig) {
 		this.addToConfig = addToConfig;

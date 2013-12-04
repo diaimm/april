@@ -15,9 +15,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
  * @author diaimm
  * @version
  * 
- * @author 산토리니 윤영욱 (readytogo@coupang.com)
  * @version 2013.06.03
- * @see 도메인 추가
  */
 public class Member {
 	// 식별자

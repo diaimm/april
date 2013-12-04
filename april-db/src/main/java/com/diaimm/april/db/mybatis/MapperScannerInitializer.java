@@ -1,16 +1,16 @@
 /*
  * @fileName : SqlMapClientTemplateInitializer.java
  * @date : 2013. 5. 30.
- * @author : diaimm.
- * @desc : 
+ * @desc :
  */
 package com.diaimm.april.db.mybatis;
 
 import com.diaimm.april.commons.util.EnumUtils;
-import com.diaimm.april.commons.util.FreeMarkerTemplateBuilder.AttributeBuilder;
-import com.diaimm.april.db.mybatis.datasource.RoutingDataSource;
-import com.diaimm.april.db.mybatis.datasource.RoutingTransactionManager;
+import com.diaimm.april.commons.util.FreeMarkerTemplateBuilder;
 import com.diaimm.april.db.mybatis.framework.DatasourceMapperScannerConfigurer;
+import com.diaimm.april.db.mybatis.routing.RoutingTransactionManager;
+import com.diaimm.april.db.routing.AbstractRoutingTransactionManager;
+import com.diaimm.april.db.routing.RoutingDataSource;
 import com.diaimm.april.db.util.*;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
@@ -32,7 +32,6 @@ import java.util.Map.Entry;
  */
 public class MapperScannerInitializer implements ApplicationContextAware, BeanFactoryPostProcessor {
 	static final String SQLMAP_CLIENT_TEMPLATE_INITIALIZE_TEMPLATE_FTL = "sqlmap-client-template-initialize-template.ftl";
-	static final String ROUTING_TRANSACTION_MANAGER_INITIALIZE_TEMPLATE_FTL = "routing-transaction-manager-initialize-template.ftl";
 	private Logger logger = LoggerFactory.getLogger(MapperScannerInitializer.class);
 	private DBPropertyProvider dbPropertyProvider = new DBPropertyProvider.DefaultDBPropertyProvider();
 	private boolean useRoutingTransactionManager = true;
@@ -66,7 +65,9 @@ public class MapperScannerInitializer implements ApplicationContextAware, BeanFa
 	 */
 	void initializeRoutingTransactionManager(List<Map<String, Object>> templateAttributes, ConfigurableListableBeanFactory beanFactory) {
 		try {
-			AttributeBuilder attributeBuilder = DataSourceIntializePropertiesUtils.getDataSourceBeanConfiguration(this.getClass(), templateAttributes, ROUTING_TRANSACTION_MANAGER_INITIALIZE_TEMPLATE_FTL);
+			FreeMarkerTemplateBuilder.AttributeBuilder attributeBuilder = DataSourceIntializePropertiesUtils.getDataSourceBeanConfiguration(
+					AbstractRoutingTransactionManager.class, templateAttributes,
+					AbstractRoutingTransactionManager.ROUTING_TRANSACTION_MANAGER_INITIALIZE_TEMPLATE_FTL);
 			attributeBuilder.set("routing", getRoutingTransactionManagerAttributes());
 			String configuration = attributeBuilder.build();
 			logger.debug(configuration);
@@ -94,7 +95,8 @@ public class MapperScannerInitializer implements ApplicationContextAware, BeanFa
 	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 		try {
 			List<Map<String, Object>> allDataSourcePropertyFiles = getAllDataSourcePropertyFiles();
-			DataSourceIntializePropertiesUtils.initializeByTemplate(this.getClass(), allDataSourcePropertyFiles, beanFactory, SQLMAP_CLIENT_TEMPLATE_INITIALIZE_TEMPLATE_FTL);
+			DataSourceIntializePropertiesUtils.initializeByTemplate(this.getClass(), allDataSourcePropertyFiles, beanFactory,
+				SQLMAP_CLIENT_TEMPLATE_INITIALIZE_TEMPLATE_FTL);
 			if (useRoutingTransactionManager) {
 				initializeRoutingTransactionManager(allDataSourcePropertyFiles, beanFactory);
 			}
@@ -113,7 +115,7 @@ public class MapperScannerInitializer implements ApplicationContextAware, BeanFa
 		if (mapperScannerConfigurers != null) {
 			for (Entry<String, DatasourceMapperScannerConfigurer> entry : mapperScannerConfigurers.entrySet()) {
 				if (entry.getKey().endsWith("MapperScanner_auto")) {
-					entry.getValue().postProcessBeanDefinitionRegistry((BeanDefinitionRegistry) beanFactory);
+					entry.getValue().postProcessBeanDefinitionRegistry((BeanDefinitionRegistry)beanFactory);
 				}
 			}
 		}
@@ -121,7 +123,7 @@ public class MapperScannerInitializer implements ApplicationContextAware, BeanFa
 
 	/**
 	 * @return
-	 * @throws IOException
+	 * @throws java.io.IOException
 	 */
 	List<Map<String, Object>> getAllDataSourcePropertyFiles() throws IOException {
 		List<Map<String, Object>> dataSourcePropertyFiles = new ArrayList<Map<String, Object>>();
@@ -181,9 +183,6 @@ public class MapperScannerInitializer implements ApplicationContextAware, BeanFa
 	static enum MapperScannerPropertyKeys implements DataSourceInitializerPropertyKey {
 		//
 		MYBATIS_CONFIG_LOCATION("mybatis.configLocation", "myBatisConfigLocation") {
-			/**
-			 * @see MapperScannerInitializer.MapperScannerPropertyKeys#getValue(java.util.Properties)
-			 */
 			@Override
 			Object getValue(Properties properties) {
 				Object ret = super.getValue(properties);
@@ -196,13 +195,10 @@ public class MapperScannerInitializer implements ApplicationContextAware, BeanFa
 		},
 		//
 		MYBATIS_MAPPING_LOCATION("mybatis.mappingLocation", "myBatisMappingLocations") {
-			/**
-			 * @see MapperScannerInitializer.MapperScannerPropertyKeys#getValue(java.util.Properties)
-			 */
 			@Override
 			Object getValue(Properties properties) {
 				List<String> ret = new ArrayList<String>();
-				String propertiValue = (String) super.getValue(properties);
+				String propertiValue = (String)super.getValue(properties);
 				if (StringUtils.isNotBlank(propertiValue)) {
 					String[] locations = propertiValue.split(",");
 					for (String location : locations) {

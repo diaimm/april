@@ -22,5 +22,8 @@
 				<value>classpath:com/diaimm/april/db/jpa/hibernate/dbs</value>
 			</list>
 		</property>
+		<property name="useRoutingTransactionManager">
+			<value>false</value>
+		</property>
 	</bean>
 </beans>

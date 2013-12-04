@@ -4,9 +4,11 @@
  * @author : diaimm.
  * @desc : 
  */
-package com.diaimm.april.db.mybatis.datasource;
+package com.diaimm.april.db.mybatis.routing;
 
 import com.diaimm.april.db.mybatis.framework.QueryExecutionListener;
+import com.diaimm.april.db.routing.RoutingDataSourceCurrentDatasourceHolder;
+import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.executor.BatchResult;
 import org.apache.ibatis.session.*;
@@ -21,6 +23,7 @@ import org.springframework.dao.support.PersistenceExceptionTranslator;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +41,7 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	private final SqlSession sqlSessionProxy;
 	private List<QueryExecutionListener> queryExecutionListeners;
 	private ApplicationContext applicationContext;
-	private String datasourceId;
+	private final String datasourceId;
 
 	/**
 	 * Constructs a Spring managed SqlSession with the {@code SqlSessionFactory} provided as an argument.
@@ -57,8 +60,8 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	 * @param executorType
 	 */
 	public RoutingSqlSessionTemplate(String datasourceId, SqlSessionFactory sqlSessionFactory, ExecutorType executorType) {
-		this(datasourceId, sqlSessionFactory, executorType, new MyBatisExceptionTranslator(sqlSessionFactory.getConfiguration().getEnvironment()
-				.getDataSource(), true));
+		this(datasourceId, sqlSessionFactory, executorType, new MyBatisExceptionTranslator(
+			sqlSessionFactory.getConfiguration().getEnvironment().getDataSource(), true));
 	}
 
 	/**
@@ -72,14 +75,14 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	 * @param exceptionTranslator
 	 */
 	public RoutingSqlSessionTemplate(String datasourceId, SqlSessionFactory sqlSessionFactory, ExecutorType executorType,
-									 PersistenceExceptionTranslator exceptionTranslator) {
+		PersistenceExceptionTranslator exceptionTranslator) {
 		super(sqlSessionFactory, executorType, exceptionTranslator);
 
 		notNull(sqlSessionFactory, "Property 'sqlSessionFactory' is required");
 		notNull(executorType, "Property 'executorType' is required");
 
-		this.sqlSessionProxy = (SqlSession) newProxyInstance(SqlSessionFactory.class.getClassLoader(), new Class[]{SqlSession.class},
-				new SqlSessionInterceptor());
+		this.sqlSessionProxy = (SqlSession)newProxyInstance(SqlSessionFactory.class.getClassLoader(), new Class[] {SqlSession.class},
+			new SqlSessionInterceptor());
 		this.datasourceId = datasourceId;
 	}
 
@@ -93,62 +96,71 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public <T> T selectOne(String statement) {
-		return this.sqlSessionProxy.<T>selectOne(statement);
+		return this.sqlSessionProxy.<T> selectOne(statement);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public <T> T selectOne(String statement, Object parameter) {
-		return this.sqlSessionProxy.<T>selectOne(statement, parameter);
+		return this.sqlSessionProxy.<T> selectOne(statement, parameter);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public <K, V> Map<K, V> selectMap(String statement, String mapKey) {
-		return this.sqlSessionProxy.<K, V>selectMap(statement, mapKey);
+		return this.sqlSessionProxy.<K, V> selectMap(statement, mapKey);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public <K, V> Map<K, V> selectMap(String statement, Object parameter, String mapKey) {
-		return this.sqlSessionProxy.<K, V>selectMap(statement, parameter, mapKey);
+		return this.sqlSessionProxy.<K, V> selectMap(statement, parameter, mapKey);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public <K, V> Map<K, V> selectMap(String statement, Object parameter, String mapKey, RowBounds rowBounds) {
-		return this.sqlSessionProxy.<K, V>selectMap(statement, parameter, mapKey, rowBounds);
+		return this.sqlSessionProxy.<K, V> selectMap(statement, parameter, mapKey, rowBounds);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public <E> List<E> selectList(String statement) {
-		return this.sqlSessionProxy.<E>selectList(statement);
+		return this.sqlSessionProxy.<E> selectList(statement);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public <E> List<E> selectList(String statement, Object parameter) {
-		return this.sqlSessionProxy.<E>selectList(statement, parameter);
+		return this.sqlSessionProxy.<E> selectList(statement, parameter);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public <E> List<E> selectList(String statement, Object parameter, RowBounds rowBounds) {
-		return this.sqlSessionProxy.<E>selectList(statement, parameter, rowBounds);
+		return this.sqlSessionProxy.<E> selectList(statement, parameter, rowBounds);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void select(String statement, ResultHandler handler) {
 		this.sqlSessionProxy.select(statement, handler);
 	}
@@ -156,6 +168,7 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void select(String statement, Object parameter, ResultHandler handler) {
 		this.sqlSessionProxy.select(statement, parameter, handler);
 	}
@@ -163,6 +176,7 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void select(String statement, Object parameter, RowBounds rowBounds, ResultHandler handler) {
 		this.sqlSessionProxy.select(statement, parameter, rowBounds, handler);
 	}
@@ -170,6 +184,7 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int insert(String statement) {
 		return this.sqlSessionProxy.insert(statement);
 	}
@@ -177,6 +192,7 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int insert(String statement, Object parameter) {
 		return this.sqlSessionProxy.insert(statement, parameter);
 	}
@@ -184,6 +200,7 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int update(String statement) {
 		return this.sqlSessionProxy.update(statement);
 	}
@@ -191,6 +208,7 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int update(String statement, Object parameter) {
 		return this.sqlSessionProxy.update(statement, parameter);
 	}
@@ -198,6 +216,7 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int delete(String statement) {
 		return this.sqlSessionProxy.delete(statement);
 	}
@@ -205,6 +224,7 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int delete(String statement, Object parameter) {
 		return this.sqlSessionProxy.delete(statement, parameter);
 	}
@@ -212,6 +232,7 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public <T> T getMapper(Class<T> type) {
 		return getConfiguration().getMapper(type, this);
 	}
@@ -219,6 +240,7 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void commit() {
 		throw new UnsupportedOperationException("Manual commit is not allowed over a Spring managed SqlSession");
 	}
@@ -226,6 +248,7 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void commit(boolean force) {
 		throw new UnsupportedOperationException("Manual commit is not allowed over a Spring managed SqlSession");
 	}
@@ -233,6 +256,7 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void rollback() {
 		throw new UnsupportedOperationException("Manual rollback is not allowed over a Spring managed SqlSession");
 	}
@@ -240,6 +264,7 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void rollback(boolean force) {
 		throw new UnsupportedOperationException("Manual rollback is not allowed over a Spring managed SqlSession");
 	}
@@ -247,6 +272,7 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void close() {
 		throw new UnsupportedOperationException("Manual close is not allowed over a Spring managed SqlSession");
 	}
@@ -254,6 +280,7 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void clearCache() {
 		this.sqlSessionProxy.clearCache();
 	}
@@ -261,6 +288,7 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public Connection getConnection() {
 		return this.sqlSessionProxy.getConnection();
 	}
@@ -270,6 +298,7 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	 *
 	 * @since 1.0.2
 	 */
+	@Override
 	public List<BatchResult> flushStatements() {
 		return this.sqlSessionProxy.flushStatements();
 	}
@@ -303,13 +332,23 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 	 * {@code Method#invoke(Object, Object...)} to pass a {@code PersistenceException} to the {@code PersistenceExceptionTranslator}.
 	 */
 	private class SqlSessionInterceptor implements InvocationHandler {
+		private void needReadOnlyConnection(Connection connection, Method method) throws SQLException {
+			if (connection.getAutoCommit() && StringUtils.startsWith(method.getName(), "select")) {
+				connection.setReadOnly(true);
+			} else {
+				connection.setReadOnly(false);
+			}
+		}
+
+		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			final SqlSession sqlSession = getSqlSession(RoutingSqlSessionTemplate.this.getSqlSessionFactory(),
-					RoutingSqlSessionTemplate.this.getExecutorType(), RoutingSqlSessionTemplate.this.getPersistenceExceptionTranslator());
+				RoutingSqlSessionTemplate.this.getExecutorType(), RoutingSqlSessionTemplate.this.getPersistenceExceptionTranslator());
 			RoutingDataSourceCurrentDatasourceHolder.setContext(RoutingSqlSessionTemplate.this.datasourceId);
-			String sqlId = (String) args[0];
+			String sqlId = (String)args[0];
 			Configuration configuration = sqlSession.getConfiguration();
 			Connection connection = sqlSession.getConnection();
+			needReadOnlyConnection(connection, method);
 
 			try {
 				for (QueryExecutionListener listener : queryExecutionListeners) {
@@ -326,7 +365,7 @@ public class RoutingSqlSessionTemplate extends SqlSessionTemplate implements Ini
 				Throwable unwrapped = unwrapThrowable(t);
 				if (RoutingSqlSessionTemplate.this.getExecutorType() != null && unwrapped instanceof PersistenceException) {
 					Throwable translated = RoutingSqlSessionTemplate.this.getPersistenceExceptionTranslator().translateExceptionIfPossible(
-							(PersistenceException) unwrapped);
+						(PersistenceException)unwrapped);
 					if (translated != null) {
 						unwrapped = translated;
 					}

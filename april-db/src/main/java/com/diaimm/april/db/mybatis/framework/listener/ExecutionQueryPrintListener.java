@@ -6,9 +6,7 @@
  */
 package com.diaimm.april.db.mybatis.framework.listener;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-
+import com.diaimm.april.db.mybatis.framework.QueryExecutionListener;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.SimpleExecutor;
 import org.apache.ibatis.executor.statement.StatementHandler;
@@ -19,7 +17,8 @@ import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.diaimm.april.db.mybatis.framework.QueryExecutionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 /**
  * @author diaimm
@@ -28,18 +27,10 @@ import com.diaimm.april.db.mybatis.framework.QueryExecutionListener;
 public class ExecutionQueryPrintListener implements QueryExecutionListener {
 	private static Logger logger = LoggerFactory.getLogger(ExecutionQueryPrintListener.class);
 
-	/**
-	 * @see com.diaimm.april.db.mybatis.framework.QueryExecutionListener#beforeExecution(java.lang.String,
-	 *      org.apache.ibatis.mapping.MappedStatement, java.lang.Object[])
-	 */
 	@Override
 	public void beforeExecution(String sqlId, Connection connection, Configuration configuration, Object[] args) {
 	}
 
-	/**
-	 * @see com.diaimm.april.db.mybatis.framework.QueryExecutionListener#afterExecution(java.lang.String, org.apache.ibatis.mapping.MappedStatement,
-	 *      java.lang.Object[])
-	 */
 	@Override
 	public void afterExecution(String sqlId, Connection connection, Configuration configuration, Object[] args) {
 		if (!logger.isDebugEnabled()) {
@@ -49,19 +40,11 @@ public class ExecutionQueryPrintListener implements QueryExecutionListener {
 		logQueryExecution(sqlId, connection, configuration, args, null);
 	}
 
-	/**
-	 * @see com.diaimm.april.db.mybatis.framework.QueryExecutionListener#onException(java.lang.String, org.apache.ibatis.mapping.MappedStatement,
-	 *      java.lang.Object[], java.lang.Throwable)
-	 */
 	@Override
 	public void onException(String sqlId, Connection connection, Configuration configuration, Object[] args, Throwable throwable) {
 		logQueryExecution(sqlId, connection, configuration, args, throwable);
 	}
 
-	/**
-	 * @see com.diaimm.april.db.mybatis.framework.QueryExecutionListener#afterClose(java.lang.String, org.apache.ibatis.mapping.MappedStatement,
-	 *      java.lang.Object[])
-	 */
 	@Override
 	public void afterClose(String sqlId, Configuration configuration, Object[] args) {
 	}
@@ -90,8 +73,8 @@ public class ExecutionQueryPrintListener implements QueryExecutionListener {
 		try {
 			if (connection != null) {
 				StatementHandler handler = configuration.newStatementHandler(new SimpleExecutor(configuration, null), mappedStatement, mapParams,
-						RowBounds.DEFAULT, Executor.NO_RESULT_HANDLER, boundSql);
-				PreparedStatement preparedStatement = (PreparedStatement) handler.prepare(connection);
+					RowBounds.DEFAULT, Executor.NO_RESULT_HANDLER, boundSql);
+				PreparedStatement preparedStatement = (PreparedStatement)handler.prepare(connection);
 				handler.parameterize(preparedStatement);
 				String parameterizedQuery = preparedStatement.toString();
 				String query = parameterizedQuery.substring(parameterizedQuery.indexOf(":"));

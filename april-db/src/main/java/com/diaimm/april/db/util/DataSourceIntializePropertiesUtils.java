@@ -12,12 +12,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.xml.DefaultNamespaceHandlerResolver;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.xml.sax.InputSource;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -49,9 +52,11 @@ public class DataSourceIntializePropertiesUtils {
 	/**
 	 * @param templateAttributes
 	 */
-	public static void initializeByTemplate(Class<?> templateClass, List<Map<String, Object>> templateAttributes, ConfigurableListableBeanFactory beanFactory, String templatePath) {
+	public static void initializeByTemplate(Class<?> templateClass, List<Map<String, Object>> templateAttributes,
+		ConfigurableListableBeanFactory beanFactory, String templatePath) {
 		try {
-			FreeMarkerTemplateBuilder.AttributeBuilder attributeBuilder = DataSourceIntializePropertiesUtils.getDataSourceBeanConfiguration(templateClass, templateAttributes, templatePath);
+			FreeMarkerTemplateBuilder.AttributeBuilder attributeBuilder = DataSourceIntializePropertiesUtils.getDataSourceBeanConfiguration(
+				templateClass, templateAttributes, templatePath);
 			String configuration = attributeBuilder.build();
 			logger.debug(configuration);
 			feedToBeanFactory(beanFactory, configuration);
@@ -69,7 +74,11 @@ public class DataSourceIntializePropertiesUtils {
 			return;
 		}
 		InputStream inputStream = new ByteArrayInputStream(configuration.getBytes());
-		XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader((BeanDefinitionRegistry) beanFactory);
+		XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader((BeanDefinitionRegistry)beanFactory);
+
+		DefaultNamespaceHandlerResolver nameSpaceHandlerResolver = new DefaultNamespaceHandlerResolver(beanFactory.getBeanClassLoader());
+		xmlReader.setNamespaceHandlerResolver(nameSpaceHandlerResolver);
+		xmlReader.setNamespaceAware(true);
 		xmlReader.setValidationMode(XmlBeanDefinitionReader.VALIDATION_NONE);
 		xmlReader.loadBeanDefinitions(new InputSource(inputStream));
 	}
@@ -79,9 +88,10 @@ public class DataSourceIntializePropertiesUtils {
 	 * @return
 	 * @throws freemarker.template.TemplateException
 	 *
-	 * @throws IOException
+	 * @throws java.io.IOException
 	 */
-	public static FreeMarkerTemplateBuilder.AttributeBuilder getDataSourceBeanConfiguration(Class<?> clazz, List<Map<String, Object>> templateAttributes, String templatePath) throws TemplateException, IOException {
+	public static FreeMarkerTemplateBuilder.AttributeBuilder getDataSourceBeanConfiguration(Class<?> clazz,
+		List<Map<String, Object>> templateAttributes, String templatePath) throws TemplateException, IOException {
 		FreeMarkerTemplateBuilder templateMaker = new FreeMarkerTemplateBuilder(clazz, templatePath);
 		return templateMaker.attribute().set("dataSources", templateAttributes);
 	}
@@ -92,7 +102,7 @@ public class DataSourceIntializePropertiesUtils {
 	 * @param applicationContext
 	 * @param location           property file의 경로 혹은 해당 file이 포함된 directory 경로
 	 * @return
-	 * @throws IOException
+	 * @throws java.io.IOException
 	 */
 	public static List<Properties> getPropertiesList(ApplicationContext applicationContext, String location) throws IOException {
 		if (!(location.indexOf(".properties") == location.length() - ".properties".length())) {

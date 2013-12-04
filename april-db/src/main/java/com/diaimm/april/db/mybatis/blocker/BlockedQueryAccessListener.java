@@ -1,16 +1,9 @@
 /*
  * @fileName : ExecutionBlockerListener.java
  * @date : 2013. 6. 5.
- * @author : diaimm.
- * @desc : 
+ * @desc :
  */
 package com.diaimm.april.db.mybatis.blocker;
-
-import java.sql.Connection;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import com.diaimm.april.db.mybatis.framework.QueryExecutionListener;
 import com.diaimm.april.db.mybatis.framework.listener.QueryBindingHelper;
@@ -19,6 +12,12 @@ import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.session.Configuration;
 import org.springframework.util.CollectionUtils;
+
+import java.sql.Connection;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author diaimm
@@ -33,10 +32,6 @@ class BlockedQueryAccessListener implements QueryExecutionListener {
 		this.blockQueryManager = blockQueryManager;
 	}
 
-	/**
-	 * @see com.diaimm.april.db.mybatis.framework.QueryExecutionListener#beforeExecution(java.lang.String, java.sql.Connection,
-	 *      org.apache.ibatis.session.Configuration, java.lang.Object[])
-	 */
 	@Override
 	public void beforeExecution(String sqlId, Connection connection, Configuration configuration, Object[] args) {
 		Object mapParams = QueryBindingHelper.wrapCollection(args[1]);
@@ -89,27 +84,15 @@ class BlockedQueryAccessListener implements QueryExecutionListener {
 		return "";
 	}
 
-	/**
-	 * @see com.diaimm.april.db.mybatis.framework.QueryExecutionListener#afterExecution(java.lang.String, java.sql.Connection,
-	 *      org.apache.ibatis.session.Configuration, java.lang.Object[])
-	 */
 	@Override
 	public void afterExecution(String sqlId, Connection connection, Configuration configuration, Object[] args) {
 
 	}
 
-	/**
-	 * @see com.diaimm.april.db.mybatis.framework.QueryExecutionListener#onException(java.lang.String, java.sql.Connection,
-	 *      org.apache.ibatis.session.Configuration, java.lang.Object[], java.lang.Throwable)
-	 */
 	@Override
 	public void onException(String sqlId, Connection connection, Configuration configuration, Object[] args, Throwable unwrapped) {
 	}
 
-	/**
-	 * @see com.diaimm.april.db.mybatis.framework.QueryExecutionListener#afterClose(java.lang.String, org.apache.ibatis.session.Configuration,
-	 *      java.lang.Object[])
-	 */
 	@Override
 	public void afterClose(String sqlId, Configuration configuration, Object[] args) {
 

@@ -1,8 +1,7 @@
 /*
  * @fileName : ReplicationDriver.java
  * @date : 2013. 6. 19.
- * @author : diaimm.
- * @desc : 
+ * @desc :
  */
 package com.diaimm.april.db.jdbc;
 
@@ -37,7 +36,7 @@ public class ReplicationDriver extends NonRegisteringReplicationDriver implement
 	/**
 	 * Construct a new driver and register it with DriverManager
 	 * 
-	 * @throws SQLException
+	 * @throws java.sql.SQLException
 	 *             if a database error occurs.
 	 */
 	public ReplicationDriver() throws SQLException {
@@ -45,7 +44,7 @@ public class ReplicationDriver extends NonRegisteringReplicationDriver implement
 	}
 
 	/**
-	 * @see com.mysql.jdbc.NonRegisteringDriver#acceptsURL(java.lang.String)
+	 * @see com.mysql.jdbc.NonRegisteringDriver#acceptsURL(String)
 	 */
 	@Override
 	public boolean acceptsURL(String url) throws SQLException {
@@ -54,6 +53,6 @@ public class ReplicationDriver extends NonRegisteringReplicationDriver implement
 
 	@Override
 	public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-		return null;
+		return null; //To change body of implemented methods use File | Settings | File Templates.
 	}
 }

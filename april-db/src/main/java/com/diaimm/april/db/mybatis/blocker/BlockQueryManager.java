@@ -2,19 +2,16 @@
  * @fileName : BlockQueryManager.java
  * @date : 2013. 6. 5.
  * @author : diaimm.
- * @desc : 
+ * @desc :
  */
 package com.diaimm.april.db.mybatis.blocker;
 
-import com.diaimm.april.commons.Env;
 import com.diaimm.april.commons.util.DateUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -165,9 +162,10 @@ class BlockQueryManager {
 
 		static BlockQueryManagerRequestCommand fromRequestParamValue(String encrypted) {
 			try {
-				String decode = URLDecoder.decode(encrypted, Env.DEFAULT_ENCODING);
-				String decrypted = getDecrypted(decode);
+				//				String decode = URLDecoder.decode(encrypted, Env.DEFAULT_ENCODING);
+				//				String decrypted = Crypto.getInstance().aes(AESType.AES128).decrypt(decode, ENC_KEY);
 
+				String decrypted = null;
 				String[] split = StringUtils.split(decrypted, "///");
 				String tableName = StringUtils.splitByWholeSeparator(split[1], "^^^")[1];
 				String sqlCommandTypesString = StringUtils.splitByWholeSeparator(split[2], "^^^")[1];
@@ -197,19 +195,12 @@ class BlockQueryManager {
 			ret.append("sqlCommandTypes^^^").append(Arrays.toString(sqlCommandTypes));
 
 			try {
-				return URLEncoder.encode(getEncrypted(ret), Env.DEFAULT_ENCODING);
+				//				return URLEncoder.encode(Crypto.getInstance().aes(AESType.AES128).encrypt(ret.toString(), ENC_KEY), Env.DEFAULT_ENCODING);
+				return null;
 			} catch (Exception e) {
 				logger.debug(e.getMessage(), e);
 			}
 			return "";
-		}
-
-		private static String getDecrypted(String decode) {
-			return decode;
-		}
-
-		private static String getEncrypted(StringBuffer ret) {
-			return ret.toString();
 		}
 	}
 }

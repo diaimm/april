@@ -6,12 +6,12 @@
  */
 package com.diaimm.april.db.mybatis.framework.listener;
 
-import java.util.List;
-
 import org.apache.ibatis.mapping.BoundSql;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.defaults.DefaultSqlSession.StrictMap;
+
+import java.util.List;
 
 /**
  * @author diaimm

@@ -6,18 +6,17 @@
  */
 package com.diaimm.april.db.mybatis.support;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.diaimm.april.db.mybatis.MapperScannerInitializer;
+import com.diaimm.april.db.mybatis.routing.RoutingSqlSessionTemplate;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.util.CollectionUtils;
 
-import com.diaimm.april.db.mybatis.MapperScannerInitializer.BeanNamePostfixes;
-import com.diaimm.april.db.mybatis.datasource.RoutingSqlSessionTemplate;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Mapper를 등록해야하는 configurer를 위한 abstract class 입니다.
@@ -49,8 +48,8 @@ public abstract class MapperRegistrableConfigurer implements BeanFactoryPostProc
 		for (String dbQualifierId : dbQualifierIds) {
 			List<Class<?>> mapperTypes = this.getMapperTypes(dbQualifierId);
 			for (Class<?> mapperType : mapperTypes) {
-				RoutingSqlSessionTemplate sqlSessionTemplate = beanFactory.getBean(BeanNamePostfixes.SESSION_TEMPLATE.fullName(dbQualifierId),
-						RoutingSqlSessionTemplate.class);
+				RoutingSqlSessionTemplate sqlSessionTemplate = beanFactory.getBean(
+					MapperScannerInitializer.BeanNamePostfixes.SESSION_TEMPLATE.fullName(dbQualifierId), RoutingSqlSessionTemplate.class);
 
 				if (!sqlSessionTemplate.getConfiguration().hasMapper(mapperType)) {
 					sqlSessionTemplate.getConfiguration().addMapper(mapperType);

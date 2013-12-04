@@ -1,12 +1,7 @@
-package com.diaimm.april.db.mybatis.datasource;
+package com.diaimm.april.db.routing;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 
 import javax.sql.DataSource;
 
@@ -16,48 +11,31 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.DataSourceUtils;
-import org.springframework.jdbc.datasource.JdbcTransactionObjectSupport;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionException;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.TransactionSystemException;
-import org.springframework.transaction.support.DefaultTransactionStatus;
+import org.springframework.transaction.*;
 import org.springframework.util.CollectionUtils;
 
-import com.diaimm.april.db.mybatis.MapperScannerInitializer.BeanNamePostfixes;
+import com.diaimm.april.db.mybatis.MapperScannerInitializer;
 
 /**
  * {@link RoutingDataSource}를 위한 {@PlatformTransactionManager}
- * 
+ *
  * @author diaimm
  * @version $Rev$, $Date$
  */
-public class RoutingTransactionManager implements PlatformTransactionManager, ApplicationContextAware, InitializingBean {
-	private Logger logger = LoggerFactory.getLogger(RoutingTransactionManager.class);
+public abstract class AbstractRoutingTransactionManager implements PlatformTransactionManager, ApplicationContextAware, InitializingBean {
+	public static final String ROUTING_TRANSACTION_MANAGER_INITIALIZE_TEMPLATE_FTL = "routing-transaction-manager-initialize-template.ftl";
+	private Logger logger = LoggerFactory.getLogger(AbstractRoutingTransactionManager.class);
 	private DataSource dataSource;
 	private Map<String, PlatformTransactionManager> transactionManagers;
 	private ApplicationContext applicationContext;
 
 	/**
 	 * 개별 transaction manager 등록을 위해서만 사용된다.
-	 * 
+	 *
 	 * @return
 	 */
 	Map<String, PlatformTransactionManager> getTransactionManagers() {
 		return transactionManagers;
-	}
-
-	/**
-	 * {@link DataSource}를 설정한다
-	 * 
-	 * @param dataSource
-	 *            {@link DataSource}
-	 */
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
 	}
 
 	/**
@@ -66,7 +44,7 @@ public class RoutingTransactionManager implements PlatformTransactionManager, Ap
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		if (dataSource instanceof RoutingDataSource) {
-			RoutingDataSource routingDataSource = (RoutingDataSource) dataSource;
+			RoutingDataSource routingDataSource = (RoutingDataSource)dataSource;
 			Map<?, ?> subDataSources = routingDataSource.getTargetDataSources();
 
 			if (CollectionUtils.isEmpty(subDataSources)) {
@@ -77,10 +55,10 @@ public class RoutingTransactionManager implements PlatformTransactionManager, Ap
 			transactionManagers = new TreeMap<String, PlatformTransactionManager>();
 
 			for (Entry<?, ?> entry : subDataSources.entrySet()) {
-				String dataSourceId = (String) entry.getKey();
-				DataSource subDataSource = (DataSource) entry.getValue();
+				String dataSourceId = (String)entry.getKey();
+				DataSource subDataSource = (DataSource)entry.getValue();
 
-				PlatformTransactionManager newTransactionManager = getSubDatasourceTransactionManager(dataSourceId, subDataSource);
+				PlatformTransactionManager newTransactionManager = getSubTransactionManager(dataSourceId);
 				transactionManagers.put(dataSourceId, newTransactionManager);
 			}
 
@@ -89,19 +67,26 @@ public class RoutingTransactionManager implements PlatformTransactionManager, Ap
 			// 순서고정을 위해 TreeMap을 사용합니다.
 			transactionManagers = new TreeMap<String, PlatformTransactionManager>();
 
-			PlatformTransactionManager newTransactionManager = new DataSourceTransactionManager(dataSource);
+			PlatformTransactionManager newTransactionManager = createNewDefaultTransactionManager(dataSource);
 			transactionManagers.put("defaultDataSourceId", newTransactionManager);
 		}
 	}
 
 	/**
-	 * @param subDataSource
+	 * RoutingDataSource가 아닌경우 기본 transaction manager를 생성하도록 지시합니다.
+	 * @param dataSource
 	 * @return
 	 */
-	private PlatformTransactionManager getSubDatasourceTransactionManager(String dataSourceId, DataSource subDataSource) {
-		String id = BeanNamePostfixes.DATASOURCE.strip(dataSourceId);
-		PlatformTransactionManager tx = applicationContext.getBean(BeanNamePostfixes.TRANSACTION_MANAGER.fullName(id),
-				PlatformTransactionManager.class);
+	public abstract PlatformTransactionManager createNewDefaultTransactionManager(DataSource dataSource);
+
+	/**
+	 * @param dataSourceId
+	 * @return
+	 */
+	private PlatformTransactionManager getSubTransactionManager(String dataSourceId) {
+		String id = MapperScannerInitializer.BeanNamePostfixes.DATASOURCE.strip(dataSourceId);
+		PlatformTransactionManager tx = getApplicationContext().getBean(MapperScannerInitializer.BeanNamePostfixes.TRANSACTION_MANAGER.fullName(id),
+			PlatformTransactionManager.class);
 		return tx;
 	}
 
@@ -114,21 +99,14 @@ public class RoutingTransactionManager implements PlatformTransactionManager, Ap
 		return keySet;
 	}
 
-	private void clearTransactions(List<Map<String, Object>> failRollbackTargets) {
-		for (Map<String, Object> target : failRollbackTargets) {
-			DataSourceTransactionManager transactionManager = (DataSourceTransactionManager) target.get("txm");
-			DefaultTransactionStatus status = (DefaultTransactionStatus) target.get("status");
-			JdbcTransactionObjectSupport transactionObjectSupport = (JdbcTransactionObjectSupport) status.getTransaction();
-
-			DataSourceUtils.resetConnectionAfterTransaction(transactionObjectSupport.getConnectionHolder().getConnection(),
-					transactionObjectSupport.getPreviousIsolationLevel());
-			DataSourceUtils.releaseConnection(transactionObjectSupport.getConnectionHolder().getConnection(), transactionManager.getDataSource());
-			transactionObjectSupport.getConnectionHolder().clear();
-		}
-	}
+	/**
+	 * failRollbackTargets 의 transaction들을 clear하도록 시도합니다.
+	 * @param failRollbackTargets
+	 */
+	public abstract void clearTransactions(List<Map<String, Object>> failRollbackTargets);
 
 	/**
-	 * 
+	 *
 	 * @param key
 	 * @param transactionDefinition
 	 * @param routingTransactionStatus
@@ -137,7 +115,7 @@ public class RoutingTransactionManager implements PlatformTransactionManager, Ap
 	 * @return
 	 */
 	TransactionStatus addSubTransactionStatus(String key, TransactionDefinition transactionDefinition,
-			RoutingTransactionStatus routingTransactionStatus, PlatformTransactionManager transactionManager) {
+		RoutingTransactionStatus routingTransactionStatus, PlatformTransactionManager transactionManager) {
 		TransactionStatus transactionStatus = transactionManager.getTransaction(transactionDefinition);
 		routingTransactionStatus.addSubTransactionStatus(key, transactionStatus);
 
@@ -145,17 +123,27 @@ public class RoutingTransactionManager implements PlatformTransactionManager, Ap
 	}
 
 	/**
-	 * {@link DataSource}를 리턴한다
-	 * 
-	 * @return {@link DataSource}
+	 * {@link javax.sql.DataSource}를 리턴한다
+	 *
+	 * @return {@link javax.sql.DataSource}
 	 */
 	public DataSource getDataSource() {
 		if (dataSource instanceof RoutingDataSource) {
-			RoutingDataSource routingDataSource = (RoutingDataSource) dataSource;
+			RoutingDataSource routingDataSource = (RoutingDataSource)dataSource;
 			return routingDataSource.getCurrentDataSource();
 		}
 
 		return dataSource;
+	}
+
+	/**
+	 * {@link javax.sql.DataSource}를 설정한다
+	 *
+	 * @param dataSource
+	 *            {@link javax.sql.DataSource}
+	 */
+	public void setDataSource(DataSource dataSource) {
+		this.dataSource = dataSource;
 	}
 
 	/**
@@ -172,7 +160,7 @@ public class RoutingTransactionManager implements PlatformTransactionManager, Ap
 
 			try {
 				TransactionStatus subTransactionStatus = addSubTransactionStatus(key, transactionDefinition, routingTransactionStatus,
-						transactionManager);
+					transactionManager);
 
 				Map<String, Object> clearTarget = new HashMap<String, Object>();
 				clearTarget.put("txm", transactionManager);
@@ -182,7 +170,7 @@ public class RoutingTransactionManager implements PlatformTransactionManager, Ap
 				for (Entry<String, PlatformTransactionManager> entry : transactionManagers.entrySet()) {
 					if (transactionManager == entry.getValue()) {
 						logger.error("Failed to GET TRANSACTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! (original message - " + e.getMessage()
-								+ ")  ::: " + entry.getKey());
+							+ ")  ::: " + entry.getKey());
 					}
 				}
 
@@ -200,7 +188,7 @@ public class RoutingTransactionManager implements PlatformTransactionManager, Ap
 	 */
 	@Override
 	public void commit(TransactionStatus transactionStatus) throws TransactionException {
-		RoutingTransactionStatus routingTransactionStatus = (RoutingTransactionStatus) transactionStatus;
+		RoutingTransactionStatus routingTransactionStatus = (RoutingTransactionStatus)transactionStatus;
 
 		if (routingTransactionStatus.isRollbackOnly()) {
 			rollback(routingTransactionStatus);
@@ -233,7 +221,7 @@ public class RoutingTransactionManager implements PlatformTransactionManager, Ap
 	 */
 	@Override
 	public void rollback(TransactionStatus transactionStatus) throws TransactionException {
-		RoutingTransactionStatus routingTransactionStatus = (RoutingTransactionStatus) transactionStatus;
+		RoutingTransactionStatus routingTransactionStatus = (RoutingTransactionStatus)transactionStatus;
 
 		TransactionException transactionException = null;
 
@@ -255,6 +243,10 @@ public class RoutingTransactionManager implements PlatformTransactionManager, Ap
 		if (transactionException != null) {
 			throw transactionException;
 		}
+	}
+
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
 	}
 
 	/**

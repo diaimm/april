@@ -2,12 +2,10 @@
  * @fileName : DBAccessBlockerClientConfigurere.java
  * @date : 2013. 6. 5.
  * @author : diaimm.
- * @desc : 
+ * @desc :
  */
 package com.diaimm.april.db.mybatis.blocker;
 
-import com.diaimm.april.db.mybatis.blocker.BlockQueryManager.BlockQueryManagerRequestCommand;
-import com.google.common.collect.Lists;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -74,55 +72,6 @@ public class DBAccessBlockerClientConfigurer implements InitializingBean, BeanFa
 		this.targetHosts = targetHosts;
 	}
 
-	public void setCoupangFrontHosts(List<String> coupangFrontHosts) {
-		if (targetHosts == null) {
-			targetHosts = Lists.newArrayList();
-		}
-		this.targetHosts.addAll(coupangFrontHosts);
-	}
-
-	public void setCoupangWingHosts(List<String> coupangWingHosts) {
-		if (targetHosts == null) {
-			targetHosts = Lists.newArrayList();
-		}
-		this.targetHosts.addAll(coupangWingHosts);
-	}
-
-	public void setCoupangSingHosts(List<String> coupangSingHosts) {
-		if (targetHosts == null) {
-			targetHosts = Lists.newArrayList();
-		}
-		this.targetHosts.addAll(coupangSingHosts);
-	}
-
-	public void setCoupangLoginHosts(List<String> coupangLoginHosts) {
-		if (targetHosts == null) {
-			targetHosts = Lists.newArrayList();
-		}
-		this.targetHosts.addAll(coupangLoginHosts);
-	}
-
-	public void setBabypangFrontHosts(List<String> babypangFrontHosts) {
-		if (targetHosts == null) {
-			targetHosts = Lists.newArrayList();
-		}
-		this.targetHosts.addAll(babypangFrontHosts);
-	}
-
-	public void setBabypangLoginHosts(List<String> babypangLoginHosts) {
-		if (targetHosts == null) {
-			targetHosts = Lists.newArrayList();
-		}
-		this.targetHosts.addAll(babypangLoginHosts);
-	}
-
-	public void setCoupangApiHosts(List<String> coupangApiHosts) {
-		if (targetHosts == null) {
-			targetHosts = Lists.newArrayList();
-		}
-		this.targetHosts.addAll(coupangApiHosts);
-	}
-
 	/**
 	 * @param protocol the protocol to set
 	 */
@@ -159,9 +108,6 @@ public class DBAccessBlockerClientConfigurer implements InitializingBean, BeanFa
 			this.config = config;
 		}
 
-		/**
-		 * @see DBAccessBlockerClient#block(java.lang.String, org.apache.ibatis.mapping.SqlCommandType[])
-		 */
 		@Override
 		public void block(String tableName, SqlCommandType... sqlCommandType) {
 			if (sqlCommandType == null) {
@@ -170,9 +116,6 @@ public class DBAccessBlockerClientConfigurer implements InitializingBean, BeanFa
 			call(DBAccessBlockingRequestHandler.BLOCK, tableName, sqlCommandType);
 		}
 
-		/**
-		 * @see DBAccessBlockerClient#release(java.lang.String, org.apache.ibatis.mapping.SqlCommandType[])
-		 */
 		@Override
 		public void release(String tableName, SqlCommandType... sqlCommandType) {
 			if (sqlCommandType == null) {
@@ -227,7 +170,7 @@ public class DBAccessBlockerClientConfigurer implements InitializingBean, BeanFa
 				logger.info("call url : {}", requestUrl);
 
 				HttpClient client = new DecompressingHttpClient(new AutoRetryHttpClient());
-				HttpUriRequest request = new HttpGet(requestUrl + "?v=" + BlockQueryManagerRequestCommand.toRequestParamValue(tableName, sqlCommandTypes));
+				HttpUriRequest request = new HttpGet(requestUrl + "?v=" + BlockQueryManager.BlockQueryManagerRequestCommand.toRequestParamValue(tableName, sqlCommandTypes));
 
 				try {
 					client.execute(request);

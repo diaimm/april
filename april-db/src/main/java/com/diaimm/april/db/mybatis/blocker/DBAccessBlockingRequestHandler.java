@@ -6,15 +6,12 @@
  */
 package com.diaimm.april.db.mybatis.blocker;
 
-import java.lang.reflect.Method;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExecutionChain;
 
-import com.diaimm.april.db.mybatis.blocker.BlockQueryManager.BlockQueryManagerRequestCommand;
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
 
 /**
  * db block을 수행할 handler
@@ -26,7 +23,7 @@ enum DBAccessBlockingRequestHandler {
 		@Override
 		public void handleRequest(HttpServletRequest request, BlockQueryManager blockQueryManager) {
 			String encrypted = request.getParameter("v");
-			BlockQueryManagerRequestCommand command = BlockQueryManagerRequestCommand.fromRequestParamValue(encrypted);
+			BlockQueryManager.BlockQueryManagerRequestCommand command = BlockQueryManager.BlockQueryManagerRequestCommand.fromRequestParamValue(encrypted);
 			blockQueryManager.block(command);
 		}
 	},
@@ -34,7 +31,7 @@ enum DBAccessBlockingRequestHandler {
 		@Override
 		public void handleRequest(HttpServletRequest request, BlockQueryManager blockQueryManager) {
 			String encrypted = request.getParameter("v");
-			BlockQueryManagerRequestCommand command = BlockQueryManagerRequestCommand.fromRequestParamValue(encrypted);
+			BlockQueryManager.BlockQueryManagerRequestCommand command = BlockQueryManager.BlockQueryManagerRequestCommand.fromRequestParamValue(encrypted);
 			blockQueryManager.release(command);
 		}
 	};

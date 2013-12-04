@@ -1,4 +1,4 @@
-package com.diaimm.april.db.mybatis.datasource;
+package com.diaimm.april.db.routing;
 
 import java.util.Map;
 
@@ -7,8 +7,8 @@ import javax.sql.DataSource;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 /**
- * 라우팅을 위한 {@link DataSource}
- * 
+ * 라우팅을 위한 {@link javax.sql.DataSource}
+ *
  * @author diaimm
  * @version $Rev$, $Date$
  */
@@ -37,9 +37,9 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
 	}
 
 	/**
-	 * 현재 {@link DataSource}를 리턴한다
-	 * 
-	 * @return 현재 {@link DataSource}
+	 * 현재 {@link javax.sql.DataSource}를 리턴한다
+	 *
+	 * @return 현재 {@link javax.sql.DataSource}
 	 */
 	public DataSource getCurrentDataSource() {
 		return determineTargetDataSource();
