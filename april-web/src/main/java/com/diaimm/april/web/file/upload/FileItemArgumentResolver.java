@@ -36,12 +36,13 @@ public class FileItemArgumentResolver implements HandlerMethodArgumentResolver {
 	 * @return {@link FileItem} 또는 UNRESOLVED
 	 */
 	private Object processFileItem(NativeWebRequest request) {
-		if (!(request instanceof MultipartHttpServletRequest)) {
+		HttpServletRequest httpServletRequest = (HttpServletRequest)request.getNativeRequest();
+		if (!(httpServletRequest instanceof MultipartHttpServletRequest)) {
 			log.info("HttpRequest가 MultipartHttpServletRequest 타입이 아닙니다");
 			return null;
 		}
 
-		final MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		final MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest)httpServletRequest;
 		final Map<String, MultipartFile> files = multipartRequest.getFileMap();
 
 		if (CollectionUtils.isEmpty(files)) {
@@ -63,13 +64,13 @@ public class FileItemArgumentResolver implements HandlerMethodArgumentResolver {
 	 * @return {@link FileItem} 배열 또는 UNRESOLVED
 	 */
 	private Object processFileItems(NativeWebRequest request) {
-		HttpServletRequest httpServletRequest = (HttpServletRequest) request.getNativeRequest();
+		HttpServletRequest httpServletRequest = (HttpServletRequest)request.getNativeRequest();
 		if (!(httpServletRequest instanceof MultipartHttpServletRequest)) {
 			log.info("HttpRequest가 MultipartHttpServletRequest 타입이 아닙니다");
 			return null;
 		}
 
-		final MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) httpServletRequest;
+		final MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest)httpServletRequest;
 		final Map<String, MultipartFile> files = multipartRequest.getFileMap();
 		if (CollectionUtils.isEmpty(files)) {
 			log.info("업로드 된 파일이 없습니다");
@@ -110,7 +111,8 @@ public class FileItemArgumentResolver implements HandlerMethodArgumentResolver {
 	}
 
 	@Override
-	public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+	public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest,
+		WebDataBinderFactory binderFactory) throws Exception {
 		Class<?> type = methodParameter.getParameterType();
 		if (FileItem.class.isAssignableFrom(type)) {
 			return this.processFileItem(webRequest);
