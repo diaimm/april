@@ -20,26 +20,21 @@ import java.util.logging.Logger;
  * @version $Rev$, $Date$
  */
 final class CompressFileManager {
-	private static CompressFileManager INSTANCE;
-	private String rootDir;
-	private ServletContext servletContext;
 	private final Map<String, String> versionControlledFiles = new HashMap<String, String>();
 	private final FileFilter[] fileFilters = new FileFilter[] {new JsFileFilter(), new CssFileFilter()};
 	private final Logger log = Logger.getLogger(CompressFileManager.class.getName());
-
-	static CompressFileManager getInstance() {
-		return INSTANCE;
-	}
-
-	static void initCompressFileManagerInstance(String rootDir, ServletContext servletContext) {
-		INSTANCE = new CompressFileManager(rootDir, servletContext);
-	}
+	private String rootDir;
+	private ServletContext servletContext;
 
 	private CompressFileManager(String rootDir, ServletContext servletContext) {
 		this.rootDir = rootDir;
 		this.servletContext = servletContext;
 
 		this.init();
+	}
+
+	static CompressFileManager getCompressFileManager(String rootDir, ServletContext servletContext) {
+		return new CompressFileManager(rootDir, servletContext);
 	}
 
 	/**

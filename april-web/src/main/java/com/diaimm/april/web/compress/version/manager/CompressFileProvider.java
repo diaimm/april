@@ -7,7 +7,11 @@ package com.diaimm.april.web.compress.version.manager;
  * @version $Rev$, $Date$
  */
 public class CompressFileProvider {
-	private CompressFileManager manager = CompressFileManager.getInstance();
+	private final CompressFileManager manager;
+
+	CompressFileProvider(CompressFileManager compressFileManager) {
+		this.manager = compressFileManager;
+	}
 
 	/**
 	 * @param prefix
