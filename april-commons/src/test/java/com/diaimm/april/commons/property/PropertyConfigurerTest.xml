@@ -26,7 +26,7 @@
 	<bean class="com.diaimm.april.commons.ByPhase">
 		<property name="basePackages">
 			<set>
-				<value>com.coupang.member.commons.property.base</value>
+				<value>com.diaimm.april.commons.property.base</value>
 			</set>
 		</property>
 	</bean>

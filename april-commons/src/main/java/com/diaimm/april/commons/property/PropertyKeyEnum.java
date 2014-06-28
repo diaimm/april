@@ -6,6 +6,7 @@
  */
 package com.diaimm.april.commons.property;
 
+import java.io.File;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -49,7 +50,7 @@ public @interface PropertyKeyEnum {
 				value.propertiesFilePrefix();
 			}
 
-			return annotatedClass.getName().replace(".", "/");
+			return annotatedClass.getName().replace(".", File.separator);
 		}
 	}
 }
