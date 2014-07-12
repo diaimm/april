@@ -36,210 +36,243 @@ import java.util.*;
  * Time: 오전 9:53
  */
 public class JPAHibernateEntityManagerInitializer implements ApplicationContextAware, BeanFactoryPostProcessor {
-	private static final String LOCAL_CONTAINER_ENTITY_MANAGER_CONFIG_TEMPLATE_FTL = "local-container-entity-manager-config-template.ftl";
-	private Logger logger = LoggerFactory.getLogger(JPAHibernateEntityManagerInitializer.class);
-	private List<String> properties;
-	private ApplicationContext applicationContext;
-	private boolean useRoutingTransactionManager = false;
+    private static final String LOCAL_CONTAINER_ENTITY_MANAGER_CONFIG_TEMPLATE_FTL = "local-container-entity-manager-config-template.ftl";
+    private Logger logger = LoggerFactory.getLogger(JPAHibernateEntityManagerInitializer.class);
+    private List<String> properties;
+    private ApplicationContext applicationContext;
+    private boolean useRoutingTransactionManager = false;
 
-	/**
-	 * property file pathes
-	 *
-	 * @param properties the properties to set
-	 */
-	public void setProperties(List<String> properties) {
-		this.properties = properties;
-	}
+    /**
+     * property file pathes
+     *
+     * @param properties the properties to set
+     */
+    public void setProperties(List<String> properties) {
+        this.properties = properties;
+    }
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-	}
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
+    }
 
-	@Override
-	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-		try {
-			List<Map<String, Object>> allDataSourcePropertyFiles = getAllDataSourcePropertyFiles();
-			DataSourceIntializePropertiesUtils.initializeByTemplate(this.getClass(), allDataSourcePropertyFiles, beanFactory,
-				LOCAL_CONTAINER_ENTITY_MANAGER_CONFIG_TEMPLATE_FTL);
+    @Override
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+        try {
+            List<Map<String, Object>> allDataSourcePropertyFiles = getAllDataSourcePropertyFiles();
+            DataSourceIntializePropertiesUtils.initializeByTemplate(this.getClass(), allDataSourcePropertyFiles, beanFactory,
+                    LOCAL_CONTAINER_ENTITY_MANAGER_CONFIG_TEMPLATE_FTL);
 
-			if (useRoutingTransactionManager) {
-				initializeRoutingTransactionManager(allDataSourcePropertyFiles, beanFactory);
-			}
-		} catch (IOException e) {
-			throw new BeansExceptionExtension(e.getMessage(), e);
-		}
-	}
+            if (useRoutingTransactionManager) {
+                initializeRoutingTransactionManager(allDataSourcePropertyFiles, beanFactory);
+            }
+        } catch (IOException e) {
+            throw new BeansExceptionExtension(e.getMessage(), e);
+        }
+    }
 
-	/**
-	 * @param templateAttributes
-	 */
-	void initializeRoutingTransactionManager(List<Map<String, Object>> templateAttributes, ConfigurableListableBeanFactory beanFactory) {
-		try {
-			FreeMarkerTemplateBuilder.AttributeBuilder attributeBuilder = DataSourceIntializePropertiesUtils.getDataSourceBeanConfiguration(
-				AbstractRoutingTransactionManager.class, templateAttributes,
-				AbstractRoutingTransactionManager.ROUTING_TRANSACTION_MANAGER_INITIALIZE_TEMPLATE_FTL);
-			attributeBuilder.set("routing", getRoutingTransactionManagerAttributes());
-			String configuration = attributeBuilder.build();
-			logger.debug(configuration);
-			DataSourceIntializePropertiesUtils.feedToBeanFactory(beanFactory, configuration);
-		} catch (Exception e) {
-			logger.error(e.getMessage(), e);
-		}
-	}
+    /**
+     * @param templateAttributes
+     */
+    void initializeRoutingTransactionManager(List<Map<String, Object>> templateAttributes, ConfigurableListableBeanFactory beanFactory) {
+        try {
+            FreeMarkerTemplateBuilder.AttributeBuilder attributeBuilder = DataSourceIntializePropertiesUtils.getDataSourceBeanConfiguration(
+                    AbstractRoutingTransactionManager.class, templateAttributes,
+                    AbstractRoutingTransactionManager.ROUTING_TRANSACTION_MANAGER_INITIALIZE_TEMPLATE_FTL);
+            attributeBuilder.set("routing", getRoutingTransactionManagerAttributes());
+            String configuration = attributeBuilder.build();
+            logger.debug(configuration);
+            DataSourceIntializePropertiesUtils.feedToBeanFactory(beanFactory, configuration);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+    }
 
-	/**
-	 * @return
-	 */
-	private Map<String, Object> getRoutingTransactionManagerAttributes() {
-		Map<String, Object> ret = new HashMap<String, Object>();
-		ret.put("datasourceId", "routingDataSource_auto");
-		ret.put("datasourceClass", RoutingDataSource.class.getName());
-		ret.put("txClass", RoutingTransactionManager.class.getName());
-		return ret;
-	}
+    /**
+     * @return
+     */
+    private Map<String, Object> getRoutingTransactionManagerAttributes() {
+        Map<String, Object> ret = new HashMap<String, Object>();
+        ret.put("datasourceId", "routingDataSource_auto");
+        ret.put("datasourceClass", RoutingDataSource.class.getName());
+        ret.put("txClass", RoutingTransactionManager.class.getName());
+        return ret;
+    }
 
-	/**
-	 * @return
-	 * @throws java.io.IOException
-	 */
-	List<Map<String, Object>> getAllDataSourcePropertyFiles() throws IOException {
-		List<Map<String, Object>> dataSourcePropertyFiles = new ArrayList<Map<String, Object>>();
-		for (String propertiFile : properties) {
-			for (Properties properties : DataSourceIntializePropertiesUtils.getPropertiesList(applicationContext, propertiFile)) {
-				prepareProperties(properties);
+    /**
+     * @return
+     * @throws java.io.IOException
+     */
+    List<Map<String, Object>> getAllDataSourcePropertyFiles() throws IOException {
+        List<Map<String, Object>> dataSourcePropertyFiles = new ArrayList<Map<String, Object>>();
+        for (String propertiFile : properties) {
+            for (Properties properties : DataSourceIntializePropertiesUtils.getPropertiesList(applicationContext, propertiFile)) {
+                prepareProperties(properties);
 
-				Map<String, Object> templateAttributes = Maps.newHashMap();
-				templateAttributes.putAll(DataSourceIntializePropertiesUtils.toTemplateAttributes(properties, DataSourcePropertyKeys.values()));
-				templateAttributes.putAll(DataSourceIntializePropertiesUtils.toTemplateAttributes(properties, JAPHibernatePropertyKeys.values()));
-				templateAttributes.putAll(EnumUtils.map(BeanNamePostfixes.class)); // bean name postfiex 들 추가
+                Map<String, Object> templateAttributes = Maps.newHashMap();
+                templateAttributes.putAll(DataSourceIntializePropertiesUtils.toTemplateAttributes(properties, DataSourcePropertyKeys.values()));
+                templateAttributes.putAll(DataSourceIntializePropertiesUtils.toTemplateAttributes(properties, JAPHibernatePropertyKeys.values()));
+                templateAttributes.putAll(EnumUtils.map(BeanNamePostfixes.class)); // bean name postfiex 들 추가
 
-				dataSourcePropertyFiles.add(templateAttributes);
-				logger.debug("loading property : {}", properties);
-			}
+                dataSourcePropertyFiles.add(templateAttributes);
+                logger.debug("loading property : {}", properties);
+            }
 
-		}
-		return dataSourcePropertyFiles;
-	}
+        }
+        return dataSourcePropertyFiles;
+    }
 
-	private void prepareProperties(Properties properties) throws IOException {
-		/**
-		 * untiname을 생성한다.
-		 */
-		String persistenceFilePath = (String)properties.get(JAPHibernatePropertyKeys.UNIT_MANAGER_PERSISTENCE_FILE.propertyKey);
-		InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(persistenceFilePath);
-		String source = IOUtils.toString(inputStream, "UTF-8");
-		Persistence persistence = JaxbObjectMapper.XML.objectify(source, Persistence.class);
+    private void prepareProperties(Properties properties) throws IOException {
+        /**
+         * untiname을 생성한다.
+         */
+        String persistenceFilePath = (String) properties.get(JAPHibernatePropertyKeys.UNIT_MANAGER_PERSISTENCE_FILE.propertyKey);
+        InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(persistenceFilePath);
+        String source = IOUtils.toString(inputStream, "UTF-8");
+        Persistence persistence = JaxbObjectMapper.XML.objectify(source, Persistence.class);
 
-		if (persistence != null && !CollectionUtils.isEmpty(persistence.units)) {
-			properties.put(JAPHibernatePropertyKeys.ENTITY_MANAGER_UNIT_NAME.propertyKey, persistence.units.get(0).name);
-		}
-	}
+        if (persistence != null && persistence.unit != null) {
+            properties.put(JAPHibernatePropertyKeys.ENTITY_MANAGER_UNIT_NAME.propertyKey, persistence.unit.name);
+        }
 
-	public void setUseRoutingTransactionManager(boolean useRoutingTransactionManager) {
-		this.useRoutingTransactionManager = useRoutingTransactionManager;
-	}
+        List<PersistenceUnitProperty> persistenceUnitProperties = persistence.unit.properties;
+        if(!CollectionUtils.isEmpty(persistenceUnitProperties)){
+            Map<String, Object> persistenceProperties = Maps.newHashMap();
+            for(PersistenceUnitProperty persistenceUnitProperty : persistenceUnitProperties){
+                persistenceProperties.put(persistenceUnitProperty.name, persistenceUnitProperty.value);
+            }
 
-	public static enum BeanNamePostfixes {
-		PERSISTENCE_UNIT_MANAGER("persistenceUnitManager"),
-		ENTITY_MANAGER_FACTORY("EntityManager"),
-		DATASOURCE("DataSource"),
-		TRANSACTION_MANAGER("TransactionManager"),
-		REPOSITORY_SCANNER("RepositoryScanner");
-		private final String postFix;
+            properties.put(JAPHibernatePropertyKeys.PERSISTENCE_UNIT_PROPERTIES.attributeKey, persistenceProperties);
+        }
 
-		BeanNamePostfixes(String postFix) {
-			this.postFix = postFix;
-		}
+    }
 
-		/**
-		 * @return the postFix
-		 */
-		public String getPostFix() {
-			return postFix;
-		}
+    public void setUseRoutingTransactionManager(boolean useRoutingTransactionManager) {
+        this.useRoutingTransactionManager = useRoutingTransactionManager;
+    }
 
-		public String fullName(String datasourceId) {
-			return datasourceId + getPostFix();
-		}
+    public static enum BeanNamePostfixes {
+        PERSISTENCE_UNIT_MANAGER("persistenceUnitManager"),
+        ENTITY_MANAGER_FACTORY("EntityManager"),
+        DATASOURCE("DataSource"),
+        TRANSACTION_MANAGER("TransactionManager"),
+        REPOSITORY_SCANNER("RepositoryScanner");
+        private final String postFix;
 
-		public String strip(String id) {
-			return id.replace(this.postFix, "");
-		}
-	}
+        BeanNamePostfixes(String postFix) {
+            this.postFix = postFix;
+        }
 
-	static enum JAPHibernatePropertyKeys implements DataSourceInitializerPropertyKey {
-		//
-		UNIT_MANAGER_PERSISTENCE_FILE("unit_manager.persistenceFile", "persistenceFile", true),
-		// scan base package
-		BASE_PACKAGE("unit_manager.basePackage", "basePackage", true),
-		//
-		ENTITY_MANAGER_UNIT_NAME("entity_manager.unitName", "unitName", true),
-		//
-		VENDER_ADPATER_SHOWSQL("vender_adapter.showSql", "showSql"),
-		//
-		VENDER_ADPATER_GENERATEDDL("vender_adapter.generateDDL", "generateDDL");
-		private final String propertyKey;
-		private final String attributeKey;
-		private final boolean required;
+        /**
+         * @return the postFix
+         */
+        public String getPostFix() {
+            return postFix;
+        }
 
-		JAPHibernatePropertyKeys(String propertyKey, String attributeKey) {
-			this(propertyKey, attributeKey, false);
-		}
+        public String fullName(String datasourceId) {
+            return datasourceId + getPostFix();
+        }
 
-		JAPHibernatePropertyKeys(String propertyKey, String attributeKey, boolean required) {
-			this.propertyKey = propertyKey;
-			this.attributeKey = attributeKey;
-			this.required = required;
-		}
+        public String strip(String id) {
+            return id.replace(this.postFix, "");
+        }
+    }
 
-		@Override
-		public void addToTemplateAttribute(Properties properties, Map<String, Object> attributes) {
-			attributes.put(this.attributeKey, getValue(properties));
-		}
+    static enum JAPHibernatePropertyKeys implements DataSourceInitializerPropertyKey {
+        //
+        UNIT_MANAGER_PERSISTENCE_FILE("unit_manager.persistenceFile", "persistenceFile", true),
+        // scan base package
+        BASE_PACKAGE("unit_manager.basePackage", "basePackage", true),
+        //
+        ENTITY_MANAGER_UNIT_NAME("entity_manager.unitName", "unitName", true),
+        //
+        VENDER_ADPATER_SHOWSQL("vender_adapter.showSql", "showSql"),
+        //
+        VENDER_ADPATER_GENERATEDDL("vender_adapter.generateDDL", "generateDDL"),
+        //
+        PERSISTENCE_UNIT_PROPERTIES("persistenceUnitProps", "persistenceUnitProps", false);
+        private final String propertyKey;
+        private final String attributeKey;
+        private final boolean required;
 
-		/**
-		 * @param properties
-		 * @return
-		 */
-		Object getValue(Properties properties) {
-			String propertyValue = properties.getProperty(propertyKey);
-			if (required && StringUtils.isEmpty(propertyValue)) {
-				throw new IllegalArgumentException(propertyKey + " is required");
-			}
+        JAPHibernatePropertyKeys(String propertyKey, String attributeKey) {
+            this(propertyKey, attributeKey, false);
+        }
 
-			if (StringUtils.isEmpty(propertyValue)) {
-				return propertyValue;
-			}
+        JAPHibernatePropertyKeys(String propertyKey, String attributeKey, boolean required) {
+            this.propertyKey = propertyKey;
+            this.attributeKey = attributeKey;
+            this.required = required;
+        }
 
-			return propertyValue.replace("&", "&amp;");
-		}
-	}
+        @Override
+        public void addToTemplateAttribute(Properties properties, Map<String, Object> attributes) {
+            attributes.put(this.attributeKey, getValue(properties));
+        }
 
-	/**
-	 * persistence.xml parsing, name 추출용
-	 */
-	@XmlRootElement(name = "persistence", namespace = "http://java.sun.com/xml/ns/persistence")
-	@XmlAccessorType(XmlAccessType.NONE)
-	static class Persistence {
-		@XmlElement(name = "persistence-unit", namespace = "http://java.sun.com/xml/ns/persistence")
-		private List<PersistenceUnit> units;
+        /**
+         * @param properties
+         * @return
+         */
+        Object getValue(Properties properties) {
+            Object propertyValue = properties.get(propertyKey);
+            if (required && (propertyValue == null || StringUtils.isEmpty(propertyValue.toString()))) {
+                throw new IllegalArgumentException(propertyKey + " is required");
+            }
 
-		@Override
-		public String toString() {
-			return ToStringBuilder.reflectionToString(this, ToStringStyle.SIMPLE_STYLE);
-		}
-	}
+            if (propertyValue == null) {
+                return null;
+            }
 
-	@XmlAccessorType(XmlAccessType.NONE)
-	static class PersistenceUnit {
-		@XmlAttribute(name = "name")
-		private String name;
+            if(propertyValue instanceof String){
+                return ((String) propertyValue).replace("&", "&amp;");
+            }
 
-		@Override
-		public String toString() {
-			return ToStringBuilder.reflectionToString(this, ToStringStyle.SIMPLE_STYLE);
-		}
-	}
+            return propertyValue;
+        }
+    }
+
+    /**
+     * persistence.xml parsing, name 추출용
+     */
+    @XmlRootElement(name = "persistence", namespace = "http://java.sun.com/xml/ns/persistence")
+    @XmlAccessorType(XmlAccessType.NONE)
+    static class Persistence {
+        @XmlElement(name = "persistence-unit", namespace = "http://java.sun.com/xml/ns/persistence")
+        private PersistenceUnit unit;
+
+        @Override
+        public String toString() {
+            return ToStringBuilder.reflectionToString(this, ToStringStyle.SIMPLE_STYLE);
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    static class PersistenceUnit {
+        @XmlAttribute(name = "name")
+        private String name;
+        @XmlElementWrapper(name = "properties", namespace = "http://java.sun.com/xml/ns/persistence")
+        @XmlElement(name = "property", namespace = "http://java.sun.com/xml/ns/persistence")
+        private List<PersistenceUnitProperty> properties;
+
+        @Override
+        public String toString() {
+            return ToStringBuilder.reflectionToString(this, ToStringStyle.SIMPLE_STYLE);
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    static class PersistenceUnitProperty {
+        @XmlAttribute(name = "name")
+        private String name;
+        @XmlAttribute(name = "value")
+        private String value;
+
+        @Override
+        public String toString() {
+            return ToStringBuilder.reflectionToString(this, ToStringStyle.SIMPLE_STYLE);
+        }
+    }
 
 }

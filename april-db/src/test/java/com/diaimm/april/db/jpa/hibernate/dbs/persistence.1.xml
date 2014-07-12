@@ -10,6 +10,7 @@
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
 			<property name="hibernate.hbm2ddl.auto" value="update"/>
 			<property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.max_fetch_depth" value="4"/>
 			<property name="jadira.usertype.autoRegisterUserTypes" value="true"/>
 			<property name="jadira.usertype.databaseZone" value="jvm"/>
 		</properties>

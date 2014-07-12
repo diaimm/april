@@ -53,10 +53,22 @@
 			<#if dataSource.useCallableStatementCache??><property name="useCallableStatementCache" value="${dataSource.useCallableStatementCache}"/></#if>
 		</bean>
 
+        <bean id="${dataSource.id}HibernateJpaVendorAdapter" class="com.diaimm.april.db.jpa.hibernate.vendor.HibernateJpaVendorAdapter">
+            <property name="showSql" value="${dataSource.showSql?default('true')}"/>
+            <property name="generateDdl" value="${dataSource.generateDDL?default('true')}"/>
+            <#if dataSource.persistenceUnitProps??>
+                <property name="hibernateProperties">
+                    <map>
+                        <#list dataSource.persistenceUnitProps?keys as key>
+                            <entry key="${key}" value="${dataSource.persistenceUnitProps[key]}"/>
+                        </#list>
+                    </map>
+                </property>
+            </#if>
+        </bean>
+
 		<bean id="${dataSource.id}${dataSource.ENTITY_MANAGER_FACTORY.postFix}" class="com.diaimm.april.db.jpa.hibernate.routing.RoutingLocalContainerEntityManagerFactoryBean">
-			<property name="jpaVendorAdapter">
-				<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" p:showSql="${dataSource.showSql?default('true')}" p:generateDdl="${dataSource.generateDDL?default('true')}"/>
-			</property>
+			<property name="jpaVendorAdapter" ref="${dataSource.id}HibernateJpaVendorAdapter"/>
 			<property name="persistenceUnitManager" ref="${dataSource.PERSISTENCE_UNIT_MANAGER.postFix}"/>
 			<property name="persistenceUnitName" value="${dataSource.unitName}"/>
 			<property name="dataSourceId" value="${dataSource.id}${dataSource.DATASOURCE.postFix}"/>
